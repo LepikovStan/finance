@@ -1,13 +1,114 @@
 <!doctype html>
 <html>
   <head>
-    <title>{{title}}</title>
+    <title>Finance</title>
     <meta name="description" content="description" />
-    <link rel="stylesheet" media="all" href="/public/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/public/css/main.css" type="text/css">
   </head>
   <body>
-    <h1>title</h1>
-    <ul>
-    </ul>
+    <div class="wrapper" id="wrapper">
+        <header class="top-info">
+            <div class="main-menu">
+                <ul>
+                    <li><a href="#">Панель</a></li>
+                    <li><a href="#">Платежи</a></li>
+                    <li><a href="#">Категории</a></li>
+                </ul>
+            </div>
+            <div class="account-menu">
+                <ul>
+                    <li><a href="#">Выход</a></li>
+                    <li><a href="#">Настройки</a></li>
+                </ul>
+            </div>
+        </header>
+        <section class="graph balance">
+            <h2>Баланс</h2>
+        </section>
+        <section class="payments mt50 cols">
+            <div class="col">
+                <div class="hgroup">
+                    <h2>Последние платежи</h2>
+                    <a href="#">создать</a>
+                </div>
+                <table class="full">
+                    <tr>
+                        <td>10 ноября 2016</td>
+                        <td>Обед</td>
+                        <td></td>
+                        <td>-250р</td>
+                    </tr>
+                    <tr>
+                        <td>12 ноября 2016</td>
+                        <td>Авто</td>
+                        <td>помыл машину</td>
+                        <td>-1000р</td>
+                    </tr>
+                    <tr>
+                        <td>14 ноября 2016</td>
+                        <td>Зарплата</td>
+                        <td></td>
+                        <td>+20 000р</td>
+                    </tr>
+                    <tr>
+                        <td>15 ноября 2016</td>
+                        <td>Обед</td>
+                        <td></td>
+                        <td>-250р</td>
+                    </tr>
+                    <tr>
+                        <td>19 ноября 2016</td>
+                        <td>Авто</td>
+                        <td>помыл машину</td>
+                        <td>-1000р</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col">
+                <div class="hgroup">
+                    <h2>Предстоящие платежи</h2>
+                    <a href="#">создать</a>
+                </div>
+                <table class="full">
+                    <tr>
+                        <td>25 ноября 2016</td>
+                        <td>Обед</td>
+                        <td></td>
+                        <td>-250р</td>
+                    </tr>
+                    <tr>
+                        <td>27 ноября 2016</td>
+                        <td>Авто</td>
+                        <td>помыл машину</td>
+                        <td>-1000р</td>
+                    </tr>
+                    <tr>
+                        <td>27 ноября 2016</td>
+                        <td>Зарплата</td>
+                        <td></td>
+                        <td>+20 000р</td>
+                    </tr>
+                    <tr>
+                        <td>28 ноября 2016</td>
+                        <td>Обед</td>
+                        <td></td>
+                        <td>-250р</td>
+                    </tr>
+                    <tr>
+                        <td>29 ноября 2016</td>
+                        <td>Авто</td>
+                        <td>помыл машину</td>
+                        <td>-1000р</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <footer>
+            <div>&copy; Finance.ру</div>
+            <div>support@finance.ru</div>
+        </footer>
+    </div>
+    <script src="/public/js/vendors.js" type="text/javascript"></script>
+    <script src="/public/js/main.js" type="text/javascript"></script>
   </body>
 </html>

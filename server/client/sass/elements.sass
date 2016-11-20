@@ -1,0 +1,56 @@
+a img, fieldset
+    border: 0
+
+a
+    outline: none
+
+li
+    list-style: none
+
+table
+    border-collapse: collapse
+
+    td
+        padding: 10px
+        border-top: 1px solid #ccc
+
+    tr
+        &:first-child
+            td
+                border: 0
+
+        &:hover
+            td
+                background: #eee
+                cursor: pointer
+
+    &.full
+        width: 100%
+
+article, aside, canvas, details, embed, figcaption, figure, footer, header, hgroup, menu, nav, section, summary
+    display: block
+
+command, datalist, keygen, mark, meter, progress, rp, rt, ruby, time, wbr
+    display: inline
+
+h2
+    font-size: 16px
+    font-weight: bold
+    margin: 0 0 10px
+
+.hgroup
+    margin: 0 0 10px
+
+    h2
+        margin: 0
+        display: inline-block
+
+    a
+        margin: 0 0 0 10px
+
+.cols
+    display: flex
+    justify-content: space-between
+
+    .col
+        width: 45%
