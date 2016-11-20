@@ -1,1 +1,1 @@
-let c = require('./m1');
+require('components/page.jsx');

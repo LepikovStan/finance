@@ -34,6 +34,7 @@ let serveOptions = {
 app.services = services;
 
 app.use('/public', serveStatic(resolve('./public'), serveOptions));
+app.use('/node_modules', serveStatic(resolve('./node_modules'), serveOptions));
 app.use(middlewares.logger);
 app.use(middlewares.user);
 
@@ -93,10 +94,19 @@ webpack({
         chunkFilename: '[chunkhash].js',
     },
     resolve: {
+        extensions: ['', '.js', '.jsx'],
         alias: {
-            // '$': resolve('./node_modules/jquery/dist/jquery.min.js'),
-            // 'jquery': resolve('./node_modules/jquery/dist/jquery.min.js')
+            'modules': resolve('./client/js'),
+            'components': resolve('./client/js/components')
         }
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx$/,
+                loader: 'jsx-loader'
+            }
+        ]
     },
     plugins: plugins
 }, (error, stats) => {
