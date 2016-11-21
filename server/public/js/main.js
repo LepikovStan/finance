@@ -64,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(React, ReactDOM) {let Header = __webpack_require__(179);
 	let Balance = __webpack_require__(182);
 	let Payments = __webpack_require__(183);
-	let Footer = __webpack_require__(187);
+	let Footer = __webpack_require__(189);
 
 	class Page extends React.Component {
 	    render() {
@@ -21550,8 +21550,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React, $) {let Hgroup = __webpack_require__(186);
+	let Table = __webpack_require__(187);
 
 	module.exports = class extends React.Component {
+
+	    constructor(props) {
+	        super(props);
+	        this.state = {};
+	    }
 
 	    getPayments() {
 	        $.get('/payments')
@@ -21562,87 +21568,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	    }
 
-	    componentDidMount() {
+	    componentWillMount() {
 	        this.getPayments();
 	    }
 
+	    filterByNow(payments, past) {
+	        let now = Date.now();
+
+	        if (past) {
+	            return payments.filter((payment) => {
+	                return payment.time < now;
+	            });
+	        } else {
+	            return payments.filter((payment) => {
+	                return payment.time >= now;
+	            });
+	        }
+	    }
+
+	    filterLastMin(payments, desc) {
+	        return payments.splice(0, 5);
+	    }
+
+	    sortByDate(payments, desc) {
+	        if (desc) {
+	            return payments.sort((a, b) => {
+	                return b.time > a.time;
+	            })
+	        } else {
+	            return payments.sort((a, b) => {
+	                return a.time > b.time;
+	            })
+	        }
+	    }
+
+	    preparePayments(payments, past) {
+	        payments = this.filterByNow(payments, past);
+	        payments = this.sortByDate(payments, past);
+	        payments = this.filterLastMin(payments);
+
+	        return payments;
+	    }
+
 	    render() {
-	        console.log(this.state);
+	        let {payments} = this.state;
+
+	        if (!payments) {
+	            return (React.createElement("div", null));
+	        }
+
+	        let lastPayments = this.preparePayments(payments, true);
+	        let futurePayments = this.preparePayments(payments);
+
 	        return (
 	            React.createElement("section", {className: "payments mt50 cols"}, 
 	                React.createElement("div", {className: "col"}, 
 	                    React.createElement(Hgroup, {title: "Последние платежи"}), 
-	                    React.createElement("table", {className: "full"}, 
-	                        React.createElement("tbody", null, 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "10 ноября 2016"), 
-	                                React.createElement("td", null, "Обед"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "-250р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "12 ноября 2016"), 
-	                                React.createElement("td", null, "Авто"), 
-	                                React.createElement("td", null, "помыл машину"), 
-	                                React.createElement("td", null, "-1000р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "14 ноября 2016"), 
-	                                React.createElement("td", null, "Зарплата"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "+20 000р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "15 ноября 2016"), 
-	                                React.createElement("td", null, "Обед"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "-250р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "19 ноября 2016"), 
-	                                React.createElement("td", null, "Авто"), 
-	                                React.createElement("td", null, "помыл машину"), 
-	                                React.createElement("td", null, "-1000р")
-	                            )
-	                        )
-	                    )
+	                    React.createElement(Table, {payments: lastPayments})
 	                ), 
 	                React.createElement("div", {className: "col"}, 
 	                    React.createElement(Hgroup, {title: "Предстоящие платежи"}), 
-	                    React.createElement("table", {className: "full"}, 
-	                        React.createElement("tbody", null, 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "25 ноября 2016"), 
-	                                React.createElement("td", null, "Обед"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "-250р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "27 ноября 2016"), 
-	                                React.createElement("td", null, "Авто"), 
-	                                React.createElement("td", null, "помыл машину"), 
-	                                React.createElement("td", null, "-1000р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "27 ноября 2016"), 
-	                                React.createElement("td", null, "Зарплата"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "+20 000р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "28 ноября 2016"), 
-	                                React.createElement("td", null, "Обед"), 
-	                                React.createElement("td", null), 
-	                                React.createElement("td", null, "-250р")
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "29 ноября 2016"), 
-	                                React.createElement("td", null, "Авто"), 
-	                                React.createElement("td", null, "помыл машину"), 
-	                                React.createElement("td", null, "-1000р")
-	                            )
-	                        )
-	                    )
+	                    React.createElement(Table, {payments: futurePayments})
 	                )
 	            )
 	        );
@@ -21688,6 +21674,59 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(React) {let Row = __webpack_require__(188);
+
+	module.exports = class extends React.Component {
+	    render() {
+	        return (
+	            React.createElement("table", {className: "full"}, 
+	                React.createElement("tbody", null, 
+	                    
+	                        this.props.payments.map((payment, index) => {
+	                            return (React.createElement(Row, {
+	                                key: index, 
+	                                index: index, 
+	                                time: payment.time, 
+	                                category: payment.category, 
+	                                summ: payment.summ}
+	                            ));
+	                        })
+	                    
+	                )
+	            )
+	        );
+	    }
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(React) {module.exports = class extends React.Component {
+	    prepareDate(uts) {
+	        let date = new Date(uts);
+	        return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+	    }
+
+	    render() {
+	        return (
+	            React.createElement("tr", {key: this.props.index}, 
+	                React.createElement("td", null, this.prepareDate(this.props.time)), 
+	                React.createElement("td", null, this.props.category), 
+	                React.createElement("td", null, this.props.summ)
+	            )
+	        );
+	    }
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {module.exports = class extends React.Component {
