@@ -1,1 +1,1 @@
-require('components/page.jsx');
+require('components/index.jsx');

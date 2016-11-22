@@ -40,13 +40,18 @@ command, datalist, keygen, mark, meter, progress, rp, rt, ruby, time, wbr {
   display: inline; }
 
 h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 20px; }
+
+h3 {
   font-size: 16px;
   font-weight: bold;
   margin: 0 0 10px; }
 
 .hgroup {
   margin: 0 0 10px; }
-  .hgroup h2 {
+  .hgroup h3 {
     margin: 0;
     display: inline-block; }
   .hgroup a {

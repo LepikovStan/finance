@@ -41,9 +41,12 @@ app.use(middlewares.user);
 app.get('/', (req, res) => {
     res.sendFile(resolve('./public/index.html'));
 });
+app.get('/payments', (req, res) => {
+    res.sendFile(resolve('./public/index.html'));
+});
 
 routes = {
-    '/payments': 'payments'
+    '/payments-list': 'payments-list'
 };
 
 for (let route in routes) {
@@ -64,15 +67,15 @@ sass({
     file: resolve('./client/sass/main.sass'),
     outFile: resolve('./public/css/main.css')
 });
-watch(resolve('./client/sass/'))
-    .then((fileName) => {
-        console.log('fileName',fileName);
-
-        sass({
-            file: resolve('./client/sass/main.sass'),
-            outFile: resolve('./public/css/main.css')
-        });
-    });
+// watch(resolve('./client/sass/'))
+//     .then((fileName) => {
+//         console.log('fileName',fileName);
+//
+//         sass({
+//             file: resolve('./client/sass/main.sass'),
+//             outFile: resolve('./public/css/main.css')
+//         });
+//     });
 
 plugins = [
     new webpack.ProvidePlugin({
@@ -80,6 +83,9 @@ plugins = [
         'React': 'react',
         'ReactDOM': 'react-dom'
     })
+    // new webpack.NoErrorsPlugin(),
+    // new webpack.optimize.OccurenceOrderPlugin(),
+    // new webpack.HotModuleReplacementPlugin()
 ];
 webpack({
     entry: {
@@ -104,7 +110,7 @@ webpack({
         loaders: [
             {
                 test: /\.jsx$/,
-                loader: 'jsx-loader'
+                loaders: [ 'jsx-loader']
             }
         ]
     },
