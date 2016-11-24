@@ -1,4 +1,4 @@
-let Payments = require('components/payments/payments.jsx');
+const Payments = require('components/blocks/payments.jsx');
 
 module.exports = class extends React.Component {
     constructor(props) {

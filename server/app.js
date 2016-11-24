@@ -15,9 +15,17 @@ let resolve = (url) => {
     return path.resolve(`${__dirname}/${url}`);
 }
 
-let middlewares = require(resolve('./middlewares'));
-let sass = require(resolve('./lib/sass'));
-let watch = require(resolve('./lib/watcher'));
+app.paths = {
+    middlewares: resolve('./middlewares'),
+    sass: resolve('./lib/sass'),
+    watcher: resolve('./lib/watcher'),
+    mainTemplate: resolve('./public/index.html'),
+    static: resolve('./public')
+}
+
+let middlewares = require(app.paths.middlewares);
+let sass = require(app.paths.sass);
+let watch = require(app.paths.watcher);
 let controllers = require('./controllers');
 let services = require('./services')(app);
 
@@ -33,20 +41,14 @@ let serveOptions = {
 // app.set('view engine', 'html');
 app.services = services;
 
-app.use('/public', serveStatic(resolve('./public'), serveOptions));
-app.use('/node_modules', serveStatic(resolve('./node_modules'), serveOptions));
+app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(middlewares.logger);
 app.use(middlewares.user);
 
-app.get('/', (req, res) => {
-    res.sendFile(resolve('./public/index.html'));
-});
-app.get('/payments', (req, res) => {
-    res.sendFile(resolve('./public/index.html'));
-});
-
 routes = {
-    '/payments-list': 'payments-list'
+    '/payments-list': 'payments-list',
+    '/balance': 'balance',
+    '/categories-list': 'categories-list'
 };
 
 for (let route in routes) {
@@ -62,6 +64,12 @@ for (let route in routes) {
             .delete(route, controller['delete'].bind(controller));
     }
 }
+
+let MainTemplateController = new controllers['mainTemplate'](app);
+app.get(
+    '/*',
+    MainTemplateController.get.bind(MainTemplateController)
+);
 
 sass({
     file: resolve('./client/sass/main.sass'),
@@ -81,7 +89,13 @@ plugins = [
     new webpack.ProvidePlugin({
         '$': `${__dirname}/node_modules/jquery/dist/jquery.min.js`,
         'React': 'react',
-        'ReactDOM': 'react-dom'
+        'ReactDOM': 'react-dom',
+        'store': resolve('./client/js/store')
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false
+        }
     })
     // new webpack.NoErrorsPlugin(),
     // new webpack.optimize.OccurenceOrderPlugin(),

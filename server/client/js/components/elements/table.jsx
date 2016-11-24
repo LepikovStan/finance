@@ -1,4 +1,4 @@
-let Row = require('components/elements/table-row');
+const Row = require('components/elements/table-row');
 
 module.exports = class extends React.Component {
     render() {

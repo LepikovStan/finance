@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "finance",
     "scripts": {
-        "app": "supervisor server/app.js",
+        "app": "node server/app.js",
         "server-i": "cd server && npm i",
         "sass": "node server/lib/sass/index.js"
     },

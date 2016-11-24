@@ -92,10 +92,15 @@ footer {
   font-size: 16px;
   justify-content: flex-start; }
   .main-menu ul li {
-    margin: 0 0 0 20px;
-    float: left; }
+    float: left;
+    padding: 5px 10px; }
     .main-menu ul li:first-child {
       margin: 0; }
+    .main-menu ul li.active {
+      border: 1px solid #666; }
+      .main-menu ul li.active a {
+        text-decoration: none;
+        cursor: default; }
 
 .account-menu ul li {
   float: right;
@@ -107,3 +112,14 @@ footer {
   padding: 15px;
   border: 5px solid #666;
   height: 320px; }
+
+.categories-list li + li {
+  margin: 15px 0 0; }
+
+.categories-list label {
+  margin: 0 0 0 10px; }
+
+.categories-list .name {
+  font-size: 14px;
+  display: inline-block;
+  margin: 0 25px 0 0; }

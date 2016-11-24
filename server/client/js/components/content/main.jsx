@@ -1,6 +1,6 @@
-let Balance = require('components/balance.jsx');
-let Payments = require('components/payments/payments.jsx');
-let Hgroup = require('components/elements/hgroup.jsx');
+const Balance = require('components/balance.jsx');
+const Payments = require('components/blocks/payments.jsx');
+const Hgroup = require('components/elements/hgroup.jsx');
 
 module.exports = class extends React.Component {
     constructor(props) {
