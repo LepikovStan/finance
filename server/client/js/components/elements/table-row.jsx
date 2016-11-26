@@ -3,12 +3,12 @@ module.exports = class extends React.Component {
         let cells = [];
         for (let name in this.props) {
             if (name !== 'index') {
-                cells.push(<td>{this.props[name]}</td>);
+                cells.push(<td key={name}>{this.props[name]}</td>);
             }
         }
 
         return (
-            <tr key={this.props.index}>
+            <tr key={this.props.key}>
                 {cells}
             </tr>
         );

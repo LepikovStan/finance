@@ -1,4 +1,5 @@
 const Categories = require('components/blocks/categories.jsx');
+const AddCategoryForm = require('components/forms/addCategory.jsx');
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -8,14 +9,20 @@ module.exports = class extends React.Component {
 
     getCategories() {
         $.get('/categories-list')
-            .then((categories) => {
-                this.setState({
+            .then(({status, result: categories}) => {
+                store.dispatch({
+                    type: 'getCategories',
                     categories
-                });
+                })
             });
     }
 
     componentWillMount() {
+        store.subscribe(() => {
+            this.setState({
+                categories: store.getState().categories
+            });
+        });
         this.getCategories();
     }
 
@@ -29,6 +36,7 @@ module.exports = class extends React.Component {
         return (
             <div className="content">
                 <h2>Категории</h2>
+                <AddCategoryForm />
                 <Categories categories={categories} />
             </div>
         );

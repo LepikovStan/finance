@@ -3,8 +3,9 @@ let fs = require('fs');
 
 module.exports = class extends Controller {
     get(req, res) {
-        res.json(
-            [
+        res.json({
+            status: 'ok',
+            result: [
                 [1478649600000,9000],
                 [1478822400000,7000],
                 [1478908800000,6750],
@@ -19,6 +20,6 @@ module.exports = class extends Controller {
                 [1481414400000,56800],
                 [1481760000000,56350]
             ]
-        );
+        });
     }
 }

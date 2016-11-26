@@ -1,7 +1,7 @@
 let express = require('express');
 let app = express();
 
-let bodyParse = require('body-parser');
+let bodyParser = require('body-parser');
 let csurf = require('csurf');
 let session = require('express-session');
 let webpack = require('webpack');
@@ -44,11 +44,14 @@ app.services = services;
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(middlewares.logger);
 app.use(middlewares.user);
+app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
+app.use(bodyParser.json({limit: '10mb'}))
 
 routes = {
     '/payments-list': 'payments-list',
     '/balance': 'balance',
-    '/categories-list': 'categories-list'
+    '/categories-list': 'categories-list',
+    '/category/:categoryId': 'category'
 };
 
 for (let route in routes) {

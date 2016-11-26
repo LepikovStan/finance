@@ -10,10 +10,12 @@ module.exports = class extends React.Component {
 
     getPayments() {
         $.get('/payments-list')
-            .then((payments) => {
-                this.setState({
-                    payments
-                });
+            .then(({status, result: payments}) => {
+                if (status === 'ok')  {
+                    this.setState({
+                        payments
+                    });
+                }
             });
     }
 

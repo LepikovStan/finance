@@ -20,7 +20,7 @@ module.exports = class extends React.Component {
 
     getPayments() {
         $.get('/payments-list')
-            .then((payments) => {
+            .then(({status, result: payments}) => {
                 this.setState({
                     payments
                 });

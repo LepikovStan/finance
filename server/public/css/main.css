@@ -113,8 +113,15 @@ footer {
   border: 5px solid #666;
   height: 320px; }
 
-.categories-list li + li {
-  margin: 15px 0 0; }
+.categories-list li {
+  padding: 5px 10px;
+  overflow: hidden; }
+  .categories-list li .actions {
+    float: right; }
+  .categories-list li:hover {
+    background: #f2f2f2; }
+  .categories-list li + li {
+    margin: 15px 0 0; }
 
 .categories-list label {
   margin: 0 0 0 10px; }
@@ -123,3 +130,6 @@ footer {
   font-size: 14px;
   display: inline-block;
   margin: 0 25px 0 0; }
+
+.add-category + .categories-list {
+  margin: 40px 0 0; }

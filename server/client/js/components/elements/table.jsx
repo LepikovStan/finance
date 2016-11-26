@@ -8,8 +8,7 @@ module.exports = class extends React.Component {
                     {
                         this.props.payments.map((payment, index) => {
                             return (<Row
-                                key={index}
-                                index={index}
+                                key={payment.id}
                                 time={payment.time}
                                 category={payment.category}
                                 summ={payment.summ}
