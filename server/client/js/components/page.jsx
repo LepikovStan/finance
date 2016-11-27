@@ -1,5 +1,5 @@
-const Header = require('components/header.jsx');
-const Footer = require('components/footer.jsx');
+const Header = require('components/header');
+const Footer = require('components/footer');
 
 module.exports = class extends React.Component {
     render() {

@@ -9,7 +9,7 @@ module.exports = class extends React.Component {
                         this.props.payments.map((payment, index) => {
                             return (<Row
                                 key={payment.id}
-                                time={payment.time}
+                                date={payment.date}
                                 category={payment.category}
                                 summ={payment.summ}
                             />);

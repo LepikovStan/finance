@@ -9,8 +9,8 @@ module.exports = class extends React.Component {
     }
 
     getBalance() {
-        $.get('/balance')
-            .then((balance) => {
+        $.get('/balance/')
+            .then(({status, result: balance}) => {
                 this.setState({
                     balance
                 });

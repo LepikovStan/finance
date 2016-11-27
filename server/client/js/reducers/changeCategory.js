@@ -1,14 +1,12 @@
 module.exports = (state, action) => {
-    $.ajax({
-        url: `/category/${action.categoryId}`,
-        method: 'PUT'
+    let categories = _.clone(state.categories);
+    let changedCategory = action.category;
+    categories.map((category, index) => {
+        if (category.id === changedCategory.id) {
+            categories[index] = changedCategory;
+        }
     })
-    .then((category) => {
-        console.log(state, category)
-    })
-    .catch((error) =>
-        console.log('error', error)
-    );
+    state.categories = categories
 
     return state;
 }

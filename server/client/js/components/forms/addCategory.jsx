@@ -28,7 +28,7 @@ module.exports = class extends React.Component {
     render() {
         return (
             <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
-                <input placeholder="Название категории" ref={ (input) => this.categoryName = input } />
+                <input type="text" placeholder="Название категории" ref={ (input) => this.categoryName = input } />
                 <button>Добавить</button>
             </form>
         );

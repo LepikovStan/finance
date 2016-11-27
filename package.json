@@ -1,12 +1,15 @@
 {
-    "name": "finance",
-    "version": "0.0.1",
-    "description": "finance",
-    "scripts": {
-        "app": "node server/app.js",
-        "server-i": "cd server && npm i",
-        "sass": "node server/lib/sass/index.js"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "finance",
+  "version": "0.0.1",
+  "description": "finance",
+  "scripts": {
+    "app": "node server/app.js",
+    "server-i": "cd server && npm i",
+    "sass": "node server/lib/sass/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.2"
+  }
 }

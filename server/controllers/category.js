@@ -11,4 +11,8 @@ module.exports = class extends Controller {
 
         res.json({ status: 'ok', result: {id, name: req.body.categoryName, income: true, outgo: true} });
     }
+
+    put(req, res) {
+        res.json({ status: 'ok', result: req.body.category });
+    }
 }

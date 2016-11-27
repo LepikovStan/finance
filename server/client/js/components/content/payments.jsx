@@ -1,4 +1,5 @@
-const Payments = require('components/blocks/payments.jsx');
+const Payments = require('components/blocks/payments');
+const { Tabs, TabList, Tab, TabPanel } = require("@blueprintjs/core");
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -6,43 +7,22 @@ module.exports = class extends React.Component {
         this.state = {};
     }
 
-    sortByDate(payments, desc) {
-        if (desc) {
-            return payments.sort((a, b) => {
-                return b.time > a.time;
-            })
-        } else {
-            return payments.sort((a, b) => {
-                return a.time > b.time;
-            })
-        }
-    }
-
-    getPayments() {
-        $.get('/payments-list')
-            .then(({status, result: payments}) => {
-                this.setState({
-                    payments
-                });
-            });
-    }
-
-    componentWillMount() {
-        this.getPayments();
-    }
-
     render() {
-        let {payments} = this.state;
-
-        if (!payments) {
-            return (<div></div>);
-        }
-        payments = this.sortByDate(payments);
-
         return (
             <div className="content">
                 <h2>Платежи</h2>
-                <Payments payments={payments} />
+                <Tabs>
+                    <TabList>
+                        <Tab>Прошедшие</Tab>
+                        <Tab>Предстоящие</Tab>
+                    </TabList>
+                    <TabPanel>
+                        <Payments type="last" filter="15" />
+                    </TabPanel>
+                    <TabPanel>
+                        <Payments type="future" filter="15" />
+                    </TabPanel>
+                </Tabs>
             </div>
         );
     }

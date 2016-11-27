@@ -48,9 +48,9 @@ app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))
 
 routes = {
-    '/payments-list': 'payments-list',
+    '/payments/:type': 'payments',
     '/balance': 'balance',
-    '/categories-list': 'categories-list',
+    '/categories-list': 'categories',
     '/category/:categoryId': 'category'
 };
 
@@ -93,7 +93,8 @@ plugins = [
         '$': `${__dirname}/node_modules/jquery/dist/jquery.min.js`,
         'React': 'react',
         'ReactDOM': 'react-dom',
-        'store': resolve('./client/js/store')
+        'store': resolve('./client/js/store'),
+        '_': 'lodash'
     }),
     new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -120,7 +121,8 @@ webpack({
         extensions: ['', '.js', '.jsx'],
         alias: {
             'modules': resolve('./client/js'),
-            'components': resolve('./client/js/components')
+            'components': resolve('./client/js/components'),
+            'lib': resolve('./client/js/lib')
         }
     },
     module: {

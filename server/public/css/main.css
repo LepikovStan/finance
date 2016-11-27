@@ -113,6 +113,10 @@ footer {
   border: 5px solid #666;
   height: 320px; }
 
+.categories-list .changeCategoryNameForm {
+  display: inline-block;
+  vertical-align: middle; }
+
 .categories-list li {
   padding: 5px 10px;
   overflow: hidden; }
@@ -129,7 +133,13 @@ footer {
 .categories-list .name {
   font-size: 14px;
   display: inline-block;
-  margin: 0 25px 0 0; }
+  margin: 0 25px 0 0;
+  width: 200px;
+  cursor: pointer; }
+  .categories-list .name:hover span {
+    display: inline; }
+  .categories-list .name span {
+    display: none; }
 
 .add-category + .categories-list {
   margin: 40px 0 0; }

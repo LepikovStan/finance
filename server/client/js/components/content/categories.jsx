@@ -1,5 +1,5 @@
-const Categories = require('components/blocks/categories.jsx');
-const AddCategoryForm = require('components/forms/addCategory.jsx');
+const Categories = require('components/blocks/categories');
+const AddCategoryForm = require('components/forms/addCategory');
 
 module.exports = class extends React.Component {
     constructor(props) {
