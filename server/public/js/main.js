@@ -60420,7 +60420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(React, store, $) {const moment = __webpack_require__(1);
+	/* WEBPACK VAR INJECTION */(function(React, store, $, _) {const moment = __webpack_require__(1);
 	
 	module.exports = class extends React.Component {
 	    constructor(props) {
@@ -60428,7 +60428,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        let today = moment().format("YYYY-MM-DD");
 	
 	        this.state = {
-	            date: today
+	            date: today,
+	            paymentValue: '',
+	            paymentTypes: {
+	                income: {
+	                    label: 'Доход',
+	                    checked: true
+	                },
+	                outgo: {
+	                    label: 'Расход',
+	                    checked: false
+	                }
+	            }
 	        }
 	    }
 	
@@ -60458,7 +60469,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    changeDate() {
 	        this.setState({
-	            date: this.date.value
+	            date: this.dateField.value
+	        })
+	    }
+	
+	    changePaymentType(paymentTypes, e) {
+	        let paymentType = e.target.value;
+	        console.log('paymentTypes', paymentTypes, paymentType)
+	
+	        Object
+	            .keys(paymentTypes)
+	            .map((name) => {
+	                if (name === paymentType) {
+	                    paymentTypes[name].checked = true
+	                } else {
+	                    paymentTypes[name].checked = false
+	                }
+	            });
+	        this.setState({
+	            paymentTypes
+	        })
+	    }
+	
+	    changePaymentValue() {
+	        this.setState({
+	            paymentValue: this.paymentValueField.value
 	        })
 	    }
 	
@@ -60467,31 +60502,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return React.createElement("div", null)
 	        }
 	
-	        console.log('this.state.categories', this.state)
 	        let categoriesOptions = this.state.categories.map((category) => {
 	            return React.createElement("option", {key: category.id, value: category.id}, category.name)
-	        })
+	        });
+	        let paymentTypes = _.clone(this.state.paymentTypes);
+	        let paymentTypesElems = Object
+	                                .keys(this.state.paymentTypes)
+	                                .map((name) => {
+	                                    let paymentType = this.state.paymentTypes[name];
+	
+	                                    return (
+	                                        React.createElement("label", {key: name}, 
+	                                            paymentType.label, 
+	                                            React.createElement("input", {
+	                                                type: "radio", 
+	                                                value: name, 
+	                                                name: "changePaymentType", 
+	                                                checked: paymentType.checked})
+	                                        )
+	                                    )
+	                                })
 	
 	        return (
 	            React.createElement("form", {className: "add-payment", onSubmit:  this.onSubmit.bind(this), ref: (form) => this.form = form}, 
 	                React.createElement("fieldset", null, 
-	                    React.createElement("input", {type: "date", value: this.state.date, onChange: this.changeDate.bind(this), ref:  (input) => this.date = input})
+	                    React.createElement("input", {type: "date", value: this.state.date, onChange: this.changeDate.bind(this), ref:  (input) => this.dateField = input})
 	                ), 
-	                React.createElement("fieldset", null, 
-	                    React.createElement("label", null, 
-	                        "Доход", 
-	                        React.createElement("input", {type: "radio", value: "income", name: "transactionCategory", checked: "checked", ref:  (input) => this.incomeCategory = input})
-	                    ), 
-	                    React.createElement("label", null, 
-	                        "Расход", 
-	                        React.createElement("input", {type: "radio", value: "outgo", name: "transactionCategory", ref:  (input) => this.outgoCategory = input})
-	                    )
+	                React.createElement("fieldset", {onChange: this.changePaymentType.bind(this, paymentTypes)}, 
+	                    paymentTypesElems
 	                ), 
 	                React.createElement("fieldset", null, 
 	                    React.createElement("select", null, 
 	                        categoriesOptions
 	                    )
 	                ), 
+	                React.createElement("fieldset", null, 
+	                    React.createElement("input", {
+	                        type: "number", 
+	                        value: this.state.paymentValue, 
+	                        onChange: this.changePaymentValue.bind(this), 
+	                        ref:  (input) => this.paymentValueField = input})
+	                ), 
+	                React.createElement("fieldset", null), 
+	                React.createElement("fieldset", null), 
 	                React.createElement("fieldset", null), 
 	                React.createElement("button", null, "Добавить")
 	            )
@@ -60499,7 +60552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(289), __webpack_require__(349), __webpack_require__(383)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(289), __webpack_require__(349), __webpack_require__(383), __webpack_require__(374)))
 
 /***/ },
 /* 396 */
@@ -72092,22 +72145,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(React, $, store, _) {module.exports = class extends React.Component {
+	/* WEBPACK VAR INJECTION */(function(React, store, $, _) {module.exports = class extends React.Component {
 	    constructor(props) {
 	        super(props);
 	        this.state = {
-	            category: {},
+	            category: props.category || {},
 	            editCategoryName: false
 	        }
 	    }
 	
-	    onChange(index, type, checked) {
-	        let category = this.state.category
-	        category[type] = !checked;
-	
-	        this.setState({
+	    onChange(type, category) {
+	        category[type] = !category[type];
+	        store.dispatch({
+	            type: 'changeCategory',
 	            category
-	        });
+	        })
 	    }
 	
 	    changeCategory(category) {
@@ -72170,35 +72222,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    render() {
-	        let category = _.clone(this.props.category)
+	        let category = _.clone(this.props.category);
 	        let categoryElem;
 	
 	        if (this.state.editCategoryName) {
-	            categoryElem = (
+	            categoryElem =
 	                React.createElement("div", {className: "changeCategoryNameForm"}, 
 	                    React.createElement("input", {type: "text", 
 	                        className: "name", 
+	                        autoFocus: true, 
 	                        placeholder: category.name, 
 	                        ref: (changeCategoryNameInput) => this.changeCategoryNameInput = changeCategoryNameInput}), 
 	                    React.createElement("button", {onClick: this.saveCategoryName.bind(this, category)}, "ok"), 
 	                    React.createElement("button", {onClick: this.cancelCategoryName.bind(this, category)}, "X")
 	                )
-	            )
 	        } else {
-	            categoryElem = React.createElement("div", {className: "name", onClick: this.onChangeCategoryName.bind(this)}, 
-	                                category.name, 
-	                                React.createElement("span", null, "edit")
-	                            )
+	            categoryElem =
+	                React.createElement("div", {className: "name", onClick: this.onChangeCategoryName.bind(this)}, 
+	                    category.name, 
+	                    React.createElement("span", null, "edit")
+	                )
 	        }
 	
 	        return (
 	            React.createElement("li", {key: category.id}, 
 	                categoryElem, 
 	                React.createElement("label", null, 
-	                    React.createElement("input", {type: "checkbox", checked: category.income, onChange: this.onChange.bind(this, category.index, 'income', category.income)}), " Доход"
+	                    React.createElement("input", {type: "checkbox", checked: category.income, onChange: this.onChange.bind(this, 'income', category)}), " Доход"
 	                ), 
 	                React.createElement("label", null, 
-	                    React.createElement("input", {type: "checkbox", checked: category.outgo, onChange: this.onChange.bind(this, category.index, 'outgo', category.outgo)}), " Расход"
+	                    React.createElement("input", {type: "checkbox", checked: category.outgo, onChange: this.onChange.bind(this, 'outgo', category)}), " Расход"
 	                ), 
 	                React.createElement("div", {className: "actions"}, 
 	                    React.createElement("button", {onClick: this.deleteCategory.bind(this, category.id)}, "удалить")
@@ -72208,7 +72261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(289), __webpack_require__(383), __webpack_require__(349), __webpack_require__(374)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(289), __webpack_require__(349), __webpack_require__(383), __webpack_require__(374)))
 
 /***/ },
 /* 478 */
