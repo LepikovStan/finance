@@ -48,7 +48,7 @@ app.services = services;
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(middlewares.logger);
-app.use(middlewares.user);
+app.use(middlewares.user(app));
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))
 

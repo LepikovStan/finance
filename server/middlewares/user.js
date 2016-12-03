@@ -1,7 +1,10 @@
-module.exports = (req, res, next) => {
-    console.log('user');
-    req.user = {
-        name: 'User'
+module.exports = (app) => {
+    return (req, res, next) => {
+        app.db.query('select * from users  limit 1', (err, rows) => {
+            user = rows[0].id;
+            user.name = "User";
+            req.user = user
+            next();
+        });
     }
-    next();
 }

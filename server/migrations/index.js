@@ -5,11 +5,21 @@ const db = mysql.createConnection(config.db);
 let schema = fs.readFileSync(`${__dirname}/schema.sql`)
 db.connect();
 
-queries = schema.toString().split(';');
+let queries = schema.toString().split(';');
 queries.pop();
 
-queries.map((query) => {
-    db.query(query, (err, rows, fields) => {
-        if (err) throw err;
+let promises = queries.map((query) => {
+    return new Promise((resolve, reject) => {
+        db.query(query, (err, rows, fields) => {
+            if (err) reject(err);
+            resolve()
+        });
+    })
+})
+
+Promise
+    .all(promises)
+    .then(() => {
+        console.log('done');
+        process.exit();
     });
-});
