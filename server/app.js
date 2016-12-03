@@ -10,6 +10,11 @@ const serveStatic = require('serve-static');
 const fs = require('fs');
 const contentDisposition = require('content-disposition')
 const path = require('path');
+const mysql = require('mysql');
+const config = require('./config');
+const db = mysql.createConnection(config.db);
+db.connect();
+app.db = db;
 
 const resolve = (url) => {
     return path.resolve(`${__dirname}/${url}`);
@@ -28,7 +33,6 @@ let sass = require(app.paths.sass);
 let watch = require(app.paths.watcher);
 let controllers = require('./controllers');
 let services = require('./services')(app);
-let config = require('./config');
 
 let serveOptions = {
     redirect: false,

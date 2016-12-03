@@ -3,6 +3,10 @@ module.exports = class {
         this.app = app;
     }
 
+    getDb() {
+        return this.app.db;
+    }
+
     getService(serviceName) {
         if (this.app[serviceName]) {
             return this.app[serviceName];

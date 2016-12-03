@@ -60445,7 +60445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    onSubmit(e) {
 	        e.preventDefault()
-	        console.log('aedd', this.date, this.date.value);
+	        console.log('aedd');
 	    }
 	
 	    componentWillMount() {

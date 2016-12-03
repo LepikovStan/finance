@@ -23,6 +23,12 @@ let plugins = [
 ];
 
 module.exports = {
+    db: {
+      host     : 'localhost',
+      user     : 'root',
+      password : '1',
+      database : 'finance'
+    },
     webpack: {
         entry: {
             main: resolve('./client/js/main.js')
