@@ -119,16 +119,25 @@ footer {
 
 .categories-list li {
   padding: 5px 10px;
-  overflow: hidden; }
+  overflow: hidden;
+  min-height: 25px; }
+  .categories-list li.edit .actions {
+    display: block; }
+  .categories-list li:hover .actions {
+    display: block; }
   .categories-list li .actions {
-    float: right; }
+    float: right;
+    display: none; }
   .categories-list li:hover {
     background: #f2f2f2; }
   .categories-list li + li {
     margin: 15px 0 0; }
 
 .categories-list label {
-  margin: 0 0 0 10px; }
+  margin: 0 0 0 10px;
+  color: #aaa; }
+  .categories-list label.active {
+    color: #666; }
 
 .categories-list .name {
   font-size: 14px;

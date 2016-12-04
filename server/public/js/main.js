@@ -72204,58 +72204,93 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 	
-	    onChangeCategoryName(category) {
-	        this.setState({
-	            editCategoryName: true
-	        })
-	    }
-	
-	    saveCategoryName(category) {
+	    saveCategoryChange(category) {
 	        category.name = this.changeCategoryNameInput.value
 	        this.changeCategory(category);
 	    }
 	
-	    cancelCategoryName() {
+	    cancelCategoryChange() {
 	        this.setState({
 	            editCategoryName: false
 	        })
 	    }
 	
+	    editCategory() {
+	        this.setState({
+	            editCategoryName: true
+	        })
+	    }
+	
 	    render() {
 	        let category = _.clone(this.props.category);
-	        let categoryElem;
+	        let categoryElem,
+	            incomeLabel,
+	            outgoLabel,
+	            actions,
+	            incomeClassName = category.income ? 'active' : '',
+	            outgoClassName = category.outgo ? 'active' : '',
+	            categoryClassName = '';
 	
 	        if (this.state.editCategoryName) {
-	            categoryElem =
+	            categoryClassName = 'edit';
+	            categoryElem = (
 	                React.createElement("div", {className: "changeCategoryNameForm"}, 
 	                    React.createElement("input", {type: "text", 
 	                        className: "name", 
 	                        autoFocus: true, 
 	                        placeholder: category.name, 
-	                        ref: (changeCategoryNameInput) => this.changeCategoryNameInput = changeCategoryNameInput}), 
-	                    React.createElement("button", {onClick: this.saveCategoryName.bind(this, category)}, "ok"), 
-	                    React.createElement("button", {onClick: this.cancelCategoryName.bind(this, category)}, "X")
+	                        ref: (changeCategoryNameInput) => this.changeCategoryNameInput = changeCategoryNameInput})
 	                )
+	            );
+	            incomeLabel = (
+	                React.createElement("label", {className: incomeClassName}, 
+	                    React.createElement("input", {type: "checkbox", checked: category.income, onChange: this.onChange.bind(this, 'income', category)}), 
+	                    "В доходе"
+	                )
+	            );
+	            outgoLabel = (
+	                React.createElement("label", {className: outgoClassName}, 
+	                    React.createElement("input", {type: "checkbox", checked: category.outgo, onChange: this.onChange.bind(this, 'outgo', category)}), 
+	                    "В расходе"
+	                )
+	            );
+	            actions =
+	                React.createElement("div", {className: "actions"}, 
+	                    React.createElement("button", {onClick: this.saveCategoryChange.bind(this, category)}, "сохранить"), 
+	                    React.createElement("button", {onClick: this.cancelCategoryChange.bind(this, category)}, "отмена"), 
+	                    React.createElement("button", {onClick: this.editCategory.bind(this, category.id)}, "редактировать"), 
+	                    React.createElement("button", {onClick: this.deleteCategory.bind(this, category.id)}, "удалить")
+	                )
+	
 	        } else {
-	            categoryElem =
-	                React.createElement("div", {className: "name", onClick: this.onChangeCategoryName.bind(this)}, 
-	                    category.name, 
-	                    React.createElement("span", null, "edit")
+	            categoryElem = (
+	                React.createElement("div", {className: "name"}, 
+	                    category.name
+	                )
+	            );
+	            incomeLabel = (
+	                React.createElement("label", {className: incomeClassName}, 
+	                    "В доходе"
+	                )
+	            );
+	            outgoLabel = (
+	                React.createElement("label", {className: outgoClassName}, 
+	                    "В расходе"
+	                )
+	            );
+	            actions =
+	                React.createElement("div", {className: "actions"}, 
+	                    React.createElement("button", {onClick: this.editCategory.bind(this, category.id)}, "редактировать"), 
+	                    React.createElement("button", {onClick: this.deleteCategory.bind(this, category.id)}, "удалить")
 	                )
 	        }
 	
 	        return (
-	            React.createElement("li", {key: category.id}, 
+	            React.createElement("li", {key: category.id, className: categoryClassName}, 
 	                categoryElem, 
-	                React.createElement("label", null, 
-	                    React.createElement("input", {type: "checkbox", checked: category.income, onChange: this.onChange.bind(this, 'income', category)}), " Доход"
-	                ), 
-	                React.createElement("label", null, 
-	                    React.createElement("input", {type: "checkbox", checked: category.outgo, onChange: this.onChange.bind(this, 'outgo', category)}), " Расход"
-	                ), 
-	                React.createElement("div", {className: "actions"}, 
-	                    React.createElement("button", {onClick: this.deleteCategory.bind(this, category.id)}, "удалить")
-	                )
+	                incomeLabel, 
+	                outgoLabel, 
+	                actions
 	            )
 	        );
 	    }

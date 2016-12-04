@@ -57,58 +57,93 @@ module.exports = class extends React.Component {
         });
     }
 
-    onChangeCategoryName(category) {
-        this.setState({
-            editCategoryName: true
-        })
-    }
-
-    saveCategoryName(category) {
+    saveCategoryChange(category) {
         category.name = this.changeCategoryNameInput.value
         this.changeCategory(category);
     }
 
-    cancelCategoryName() {
+    cancelCategoryChange() {
         this.setState({
             editCategoryName: false
         })
     }
 
+    editCategory() {
+        this.setState({
+            editCategoryName: true
+        })
+    }
+
     render() {
         let category = _.clone(this.props.category);
-        let categoryElem;
+        let categoryElem,
+            incomeLabel,
+            outgoLabel,
+            actions,
+            incomeClassName = category.income ? 'active' : '',
+            outgoClassName = category.outgo ? 'active' : '',
+            categoryClassName = '';
 
         if (this.state.editCategoryName) {
-            categoryElem =
+            categoryClassName = 'edit';
+            categoryElem = (
                 <div className="changeCategoryNameForm">
                     <input type="text"
                         className="name"
                         autoFocus={true}
                         placeholder={category.name}
                         ref={(changeCategoryNameInput) => this.changeCategoryNameInput = changeCategoryNameInput} />
-                    <button onClick={this.saveCategoryName.bind(this, category)}>ok</button>
-                    <button onClick={this.cancelCategoryName.bind(this, category)}>X</button>
                 </div>
+            );
+            incomeLabel = (
+                <label className={incomeClassName}>
+                    <input type="checkbox" checked={category.income} onChange={this.onChange.bind(this, 'income', category)} />
+                    В доходе
+                </label>
+            );
+            outgoLabel = (
+                <label className={outgoClassName}>
+                    <input type="checkbox" checked={category.outgo}  onChange={this.onChange.bind(this, 'outgo', category)} />
+                    В расходе
+                </label>
+            );
+            actions =
+                <div className="actions">
+                    <button onClick={this.saveCategoryChange.bind(this, category)}>сохранить</button>
+                    <button onClick={this.cancelCategoryChange.bind(this, category)}>отмена</button>
+                    <button onClick={this.editCategory.bind(this, category.id)}>редактировать</button>
+                    <button onClick={this.deleteCategory.bind(this, category.id)}>удалить</button>
+                </div>
+
         } else {
-            categoryElem =
-                <div className="name" onClick={this.onChangeCategoryName.bind(this)}>
+            categoryElem = (
+                <div className="name">
                     {category.name}
-                    <span>edit</span>
+                </div>
+            );
+            incomeLabel = (
+                <label className={incomeClassName}>
+                    В доходе
+                </label>
+            );
+            outgoLabel = (
+                <label className={outgoClassName}>
+                    В расходе
+                </label>
+            );
+            actions =
+                <div className="actions">
+                    <button onClick={this.editCategory.bind(this, category.id)}>редактировать</button>
+                    <button onClick={this.deleteCategory.bind(this, category.id)}>удалить</button>
                 </div>
         }
 
         return (
-            <li key={category.id}>
+            <li key={category.id} className={categoryClassName}>
                 {categoryElem}
-                <label>
-                    <input type="checkbox" checked={category.income} onChange={this.onChange.bind(this, 'income', category)} /> Доход
-                </label>
-                <label>
-                    <input type="checkbox" checked={category.outgo}  onChange={this.onChange.bind(this, 'outgo', category)} /> Расход
-                </label>
-                <div className="actions">
-                    <button onClick={this.deleteCategory.bind(this, category.id)}>удалить</button>
-                </div>
+                {incomeLabel}
+                {outgoLabel}
+                {actions}
             </li>
         );
     }

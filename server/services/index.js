@@ -15,7 +15,8 @@ module.exports = (app) => {
     Object
         .keys(services)
         .map((serviceName) => {
-            services[serviceName] = new services[serviceName](app);
+            services[serviceName] = services[serviceName](app);
         });
+
     return services;
 }

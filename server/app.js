@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express');
 const app = express();
 
@@ -13,6 +15,7 @@ const path = require('path');
 const mysql = require('mysql');
 const config = require('./config');
 const db = mysql.createConnection(config.db);
+const _ = require('lodash');
 db.connect();
 app.db = db;
 
@@ -31,8 +34,9 @@ app.paths = {
 let middlewares = require(app.paths.middlewares);
 let sass = require(app.paths.sass);
 let watch = require(app.paths.watcher);
-let controllers = require('./controllers');
+let models = require('./models')(app);
 let services = require('./services')(app);
+let controllers = require('./controllers');
 
 let serveOptions = {
     redirect: false,
@@ -44,6 +48,7 @@ let serveOptions = {
 
 // app.set('views', resolve('./public'));
 // app.set('view engine', 'html');
+app.models = models;
 app.services = services;
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
@@ -52,7 +57,7 @@ app.use(middlewares.user(app));
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))
 
-routes = {
+let routes = {
     '/payments/:type': 'payments',
     '/balance': 'balance',
     '/categories-list': 'categories',
@@ -79,6 +84,10 @@ app.get(
     MainTemplateController.get.bind(MainTemplateController)
 );
 
+sass({
+    file: resolve('./client/sass/main.sass'),
+    outFile: resolve('./public/css/main.css')
+});
 webpack(config.webpack, (error, stats) => {
     if (error) {
         return console.error(error);
@@ -86,7 +95,7 @@ webpack(config.webpack, (error, stats) => {
     console.log('webpack render success');
 });
 
-server = app.listen(3000);
+let server = app.listen(3000);
 
 server
     .once('listening', () => {
