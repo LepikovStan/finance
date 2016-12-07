@@ -24,10 +24,18 @@ let plugins = [
 
 module.exports = {
     db: {
-      host     : 'localhost',
-      user     : 'root',
-      password : '1',
-      database : 'finance'
+        home: {
+            host     : 'localhost',
+            user     : 'root',
+            password : '1',
+            database : 'finance'
+        },
+        work: {
+            "user"    : "semrush",
+            "password": "semrush",
+            "database": "semrush_pdf",
+            host      : 'localhost'
+        }
     },
     webpack: {
         entry: {

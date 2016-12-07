@@ -4,6 +4,7 @@
   "description": "finance",
   "scripts": {
     "app": "node server/app.js",
+    "app-work": "node server/app.js --work",
     "server-i": "cd server && npm i",
     "sass": "node server/lib/sass/index.js"
   },

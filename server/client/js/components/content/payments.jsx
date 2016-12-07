@@ -1,5 +1,5 @@
 const Payments = require('components/blocks/payments');
-const AddOncePaymentForm = require('components/forms/AddOncePayment');
+const AddOncePaymentForm = require('components/forms/addOncePayment');
 const { Tabs, TabList, Tab, TabPanel } = require("@blueprintjs/core");
 
 module.exports = class extends React.Component {
