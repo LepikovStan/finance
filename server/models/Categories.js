@@ -1,12 +1,12 @@
-let Service = require('../lib/service');
+let Model = require('../lib/model');
 
-class Categories extends Service {
+class Categories extends Model {
     getAll() {
-        return  [
-            {id: 2, name: 'Cat 1', income: true, outgo: true},
-            {id: 4, name: 'Cat 2', income: false, outgo: true},
-            {id: 5, name: 'Cat 3', income: true, outgo: false}
-        ]
+        return this.query('select * from categories where id != 1;');
+    }
+
+    add(params) {
+        return this.query(`insert into categories (updatedAt, user_id, name, income, outgo) values(NOW(), 0, ${params.name}, ${params.income}, ${params.outgo});`);
     }
 };
 

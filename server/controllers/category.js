@@ -7,9 +7,11 @@ module.exports = class extends Controller {
     }
 
     post(req, res) {
-        let id = Math.round(Math.random()*1000);
-
-        res.json({ status: 'ok', result: {id, name: req.body.categoryName, income: true, outgo: true} });
+        this.getService('Categories')
+            .add({name: req.body.categoryName, income: true, outgo: true})
+            .then((category) => {
+                res.json({ status: 'ok', result: category });
+            });
     }
 
     put(req, res) {
