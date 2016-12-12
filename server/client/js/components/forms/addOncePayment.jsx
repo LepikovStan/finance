@@ -8,6 +8,7 @@ module.exports = class extends React.Component {
         this.state = {
             date: today,
             paymentValue: '',
+            paymentCategory: '',
             paymentTypes: {
                 income: {
                     label: 'Доход',
@@ -17,13 +18,9 @@ module.exports = class extends React.Component {
                     label: 'Расход',
                     checked: false
                 }
-            }
+            },
+            currentPaymentType: 'income'
         }
-    }
-
-    onSubmit(e) {
-        e.preventDefault()
-        console.log('aedd');
     }
 
     componentWillMount() {
@@ -59,11 +56,13 @@ module.exports = class extends React.Component {
             .keys(paymentTypes)
             .map((name) => {
                 if (name === paymentType) {
+                    this.state.currentPaymentType = name
                     paymentTypes[name].checked = true
                 } else {
                     paymentTypes[name].checked = false
                 }
             });
+
         this.setState({
             paymentTypes
         })
@@ -73,6 +72,37 @@ module.exports = class extends React.Component {
         this.setState({
             paymentValue: this.paymentValueField.value
         })
+    }
+
+    onSubmit(e) {
+        e.preventDefault()
+        let params = {
+            date: this.state.date,
+            sum: this.state.paymentValue
+            sign: this.state.currentPaymentType
+        }
+
+        $.ajax({
+            url: '/category/new',
+            method: 'POST',
+            data: {
+                categoryName
+            }
+        })
+        .then(({status, result: payment}) => {
+            /*store.dispatch({
+                type: 'addCategory',
+                category
+            })*/
+            this.form.reset()
+        })
+        .catch((error) => {
+            console.log('error', error)
+        })
+        console.log('this.dateField', this.dateField.value);
+        console.log('this.paymentValueField.value', this.paymentValueField.value);
+        console.log('this.paymentTypes', this.state.paymentTypes);
+        console.log('this.categoryField', this.categoryField.options[this.categoryField.selectedIndex].value);
     }
 
     render() {
@@ -110,7 +140,7 @@ module.exports = class extends React.Component {
                     {paymentTypesElems}
                 </fieldset>
                 <fieldset>
-                    <select>
+                    <select ref={ (select) => this.categoryField = select }>
                         {categoriesOptions}
                     </select>
                 </fieldset>
