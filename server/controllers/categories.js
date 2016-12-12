@@ -3,7 +3,7 @@ let fs = require('fs');
 
 module.exports = class extends Controller {
     get(req, res) {
-        let categories = this
+        this
             .getService('Categories')
             .getAll()
             .then((categories) => {
@@ -11,6 +11,9 @@ module.exports = class extends Controller {
                     status: 'ok',
                     result: categories
                 });
+            })
+            .catch((error) => {
+                console.error(error);
             });
     }
 }

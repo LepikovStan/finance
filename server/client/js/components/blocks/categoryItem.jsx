@@ -23,8 +23,8 @@ module.exports = class extends React.Component {
                 category
             }
         })
-        .then(({status}) => {
-            if (status) {
+        .then((res) => {
+            if (res.status === 'ok') {
                 store.dispatch({
                     type: 'changeCategory',
                     category
@@ -32,10 +32,12 @@ module.exports = class extends React.Component {
                 this.setState({
                     editCategoryName: false
                 })
+            } else {
+                throw new Error(res.message)
             }
         })
         .catch((error) => {
-            console.log('error', error)
+            console.error('error', error)
         });
     }
 
@@ -58,7 +60,10 @@ module.exports = class extends React.Component {
     }
 
     saveCategoryChange(category) {
-        category.name = this.changeCategoryNameInput.value
+        let categoryNameNew = this.changeCategoryNameInput.value
+        if (categoryNameNew) {
+            category.name = categoryNameNew
+        }
         this.changeCategory(category);
     }
 

@@ -18,6 +18,24 @@ class Categories extends Service {
                 })
         });
     }
+
+    delete(category) {
+        return this
+            .getModel('Categories')
+            .delete(category)
+    }
+
+    change(category) {
+        return new Promise((resolve, reject) => {
+            this
+                .getModel('Categories')
+                .change(category)
+                .then((result) => {
+                    category.id = result.insertId;
+                    resolve(category);
+                })
+        });
+    }
 };
 
 module.exports = (app) => {

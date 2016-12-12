@@ -14,6 +14,7 @@ const contentDisposition = require('content-disposition')
 const path = require('path');
 const mysql = require('mysql');
 const config = require('./config');
+
 let env = process.argv[2]
 let dbConf = env === '--work' ? config.db.work : config.db.home
 const db = mysql.createConnection(dbConf);

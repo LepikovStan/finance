@@ -33,7 +33,7 @@ module.exports = {
         work: {
             "user"    : "semrush",
             "password": "semrush",
-            "database": "semrush_pdf",
+            "database": "finance",
             host      : 'localhost'
         }
     },

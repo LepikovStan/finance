@@ -1,3 +1,4 @@
 node_modules/
 server/public/js/
 server/public/css/
+npm-debug.log
