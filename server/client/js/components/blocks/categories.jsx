@@ -1,4 +1,5 @@
 const CategoryItem = require('components/blocks/categoryItem')
+const NoItems = require('components/elements/noItems')
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -20,14 +21,14 @@ module.exports = class extends React.Component {
         let categories,
             content;
 
-        if (!this.state.categories.length) {
-            content = <div className="noitems">У вас ещё нет категорий</div>
-        } else {
+        if (this.state.categories.length) {
             categories = this.state.categories.map((category, index) => {
                 category.index = index;
                 return <CategoryItem key={index} category={category} />
             });
             content = <ul>{categories}</ul>
+        } else {
+            content = <NoItems text="У вас ещё нет категорий" />
         }
 
         return (

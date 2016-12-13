@@ -8,7 +8,8 @@ module.exports = class extends React.Component {
         this.state = {
             date: today,
             paymentValue: '',
-            paymentCategory: '',
+            paymentCategory: {},
+            paymentCategoryId: '',
             paymentTypes: {
                 income: {
                     label: 'Доход',
@@ -25,11 +26,27 @@ module.exports = class extends React.Component {
 
     componentWillMount() {
         store.subscribe(() => {
+            let categories = store.getState().categories;
+
             this.setState({
-                categories: store.getState().categories
+                categories: store.getState().categories,
             })
+            let categoryId = this.getCategoryId();
+
+            this.setState({
+                paymentCategory: _.find(categories, {id: categoryId}),
+                paymentCategoryId: categoryId
+            });
         })
         this.getCategories()
+    }
+
+    getCategoryId() {
+        if (!this.categoryIdField) {
+            return undefined;
+        }
+
+        return Number(this.categoryIdField.options[this.categoryIdField.selectedIndex].value);
     }
 
     getCategories() {
@@ -50,7 +67,6 @@ module.exports = class extends React.Component {
 
     changePaymentType(paymentTypes, e) {
         let paymentType = e.target.value;
-        console.log('paymentTypes', paymentTypes, paymentType)
 
         Object
             .keys(paymentTypes)
@@ -74,35 +90,26 @@ module.exports = class extends React.Component {
         })
     }
 
+    changeCategoryId() {
+        let categories = this.state.categories,
+            categoryId = this.getCategoryId();
+
+
+        this.setState({
+            paymentCategory: _.find(categories, {id: categoryId}),
+            paymentCategoryId: categoryId
+        });
+    }
+
     onSubmit(e) {
         e.preventDefault()
         let params = {
             date: this.state.date,
-            sum: this.state.paymentValue
-            sign: this.state.currentPaymentType
+            sum: this.state.paymentValue,
+            sign: this.state.currentPaymentType,
+            categoryId: this.state.paymentCategoryId
         }
-
-        $.ajax({
-            url: '/category/new',
-            method: 'POST',
-            data: {
-                categoryName
-            }
-        })
-        .then(({status, result: payment}) => {
-            /*store.dispatch({
-                type: 'addCategory',
-                category
-            })*/
-            this.form.reset()
-        })
-        .catch((error) => {
-            console.log('error', error)
-        })
-        console.log('this.dateField', this.dateField.value);
-        console.log('this.paymentValueField.value', this.paymentValueField.value);
-        console.log('this.paymentTypes', this.state.paymentTypes);
-        console.log('this.categoryField', this.categoryField.options[this.categoryField.selectedIndex].value);
+        console.log('params', params);
     }
 
     render() {
@@ -111,13 +118,15 @@ module.exports = class extends React.Component {
         }
 
         let categoriesOptions = this.state.categories.map((category) => {
-            return <option key={category.id} value={category.id}>{category.name}</option>
-        });
-        let paymentTypes = _.clone(this.state.paymentTypes);
-        let paymentTypesElems = Object
+                return <option key={category.id} value={category.id}>{category.name}</option>
+            }),
+            category = this.state.paymentCategory,
+            paymentTypes = _.clone(this.state.paymentTypes),
+            paymentTypesElems = Object
                                 .keys(this.state.paymentTypes)
                                 .map((name) => {
-                                    let paymentType = this.state.paymentTypes[name];
+                                    let paymentType = this.state.paymentTypes[name],
+                                        disabled = !category[name];
 
                                     return (
                                         <label key={name}>
@@ -125,11 +134,12 @@ module.exports = class extends React.Component {
                                             <input
                                                 type="radio"
                                                 value={name}
+                                                disabled={disabled}
                                                 name="changePaymentType"
                                                 checked={paymentType.checked} />
                                         </label>
                                     )
-                                })
+                                });
 
         return (
             <form className="add-payment" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
@@ -140,7 +150,7 @@ module.exports = class extends React.Component {
                     {paymentTypesElems}
                 </fieldset>
                 <fieldset>
-                    <select ref={ (select) => this.categoryField = select }>
+                    <select onChange={this.changeCategoryId.bind(this)} ref={ (select) => this.categoryIdField = select }>
                         {categoriesOptions}
                     </select>
                 </fieldset>

@@ -1,6 +1,7 @@
-const Table = require('components/elements/table');
 const moment = require('moment');
 const querystring = require('querystring');
+const Table = require('components/elements/table');
+const NoItems = require('components/elements/noItems');
 
 module.exports = class extends React.Component {
 
@@ -36,16 +37,24 @@ module.exports = class extends React.Component {
     }
 
     render() {
-        this.state.payments.map((payment) => {
-            let date = moment(new Date(payment.time));
-            if (!payment.date){
-                payment.date = date.format('LL');
-            }
-            delete payment.time;
-        });
+        let payments = this.state.payments,
+            content;
+
+        if (payments.length) {
+            payments.map((payment) => {
+                let date = moment(new Date(payment.time));
+                if (!payment.date){
+                    payment.date = date.format('LL');
+                }
+                delete payment.time;
+            });
+            content = <Table payments={this.state.payments}></Table>
+        } else {
+            content = <NoItems text="У вас ещё нет платежей" />
+        }
 
         return (
-            <Table payments={this.state.payments}></Table>
+            <div className="payments-list">{content}</div>
         );
     }
 }
