@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS `payments` (
     `user_id` INT UNSIGNED NOT NULL REFERENCES users(id),
     `category_id` INT UNSIGNED NOT NULL DEFAULT 0 REFERENCES categories(id),
     `type` enum('income','outgo') NOT NULL DEFAULT 'income',
-    `amount` FLOAT NOT NULL DEFAULT 0
+    `amount` FLOAT NOT NULL DEFAULT 0,
+    `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE TABLE IF NOT EXISTS `categories` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

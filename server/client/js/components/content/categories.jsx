@@ -10,10 +10,12 @@ module.exports = class extends React.Component {
     getCategories() {
         $.get('/categories-list')
             .then(({status, result: categories}) => {
-                store.dispatch({
-                    type: 'getCategories',
-                    categories
-                })
+                if (status === 'ok'){
+                    store.dispatch({
+                        type: 'getCategories',
+                        categories
+                    })
+                }
             });
     }
 

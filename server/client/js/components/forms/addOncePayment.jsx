@@ -24,6 +24,14 @@ module.exports = class extends React.Component {
         }
     }
 
+    getInitState() {
+        return {
+            date: moment().format("YYYY-MM-DD"),
+            paymentValue: 0,
+            categoryId: this.state.categories[0]['id']
+        };
+    }
+
     componentWillMount() {
         store.subscribe(() => {
             let categories = store.getState().categories;
@@ -101,15 +109,37 @@ module.exports = class extends React.Component {
         });
     }
 
+    resetForm() {
+        this.setState(this.getInitState());
+        this.form.reset();
+    }
+
     onSubmit(e) {
         e.preventDefault()
         let params = {
             date: this.state.date,
-            sum: this.state.paymentValue,
-            sign: this.state.currentPaymentType,
+            amount: this.state.paymentValue,
+            type: this.state.currentPaymentType,
             categoryId: this.state.paymentCategoryId
         }
-        console.log('params', params);
+
+        $.ajax({
+            url: '/payment/new',
+            method: 'POST',
+            data: params
+        })
+        .then(({status, result: payment}) => {
+            if (status === 'ok'){
+                store.dispatch({
+                    type: 'addPayment',
+                    payment
+                })
+                this.resetForm();
+            }
+        })
+        .catch((error) => {
+            console.log('error', error)
+        })
     }
 
     render() {
@@ -144,7 +174,7 @@ module.exports = class extends React.Component {
         return (
             <form className="add-payment" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
                 <fieldset>
-                    <input type="date" value={this.state.date} onChange={this.changeDate.bind(this)} ref={ (input) => this.dateField = input } />
+                    <input type="date" value={this.state.date} defaultValue={moment().format("YYYY-MM-DD")} onChange={this.changeDate.bind(this)} ref={ (input) => this.dateField = input } />
                 </fieldset>
                 <fieldset onChange={this.changePaymentType.bind(this, paymentTypes)}>
                     {paymentTypesElems}

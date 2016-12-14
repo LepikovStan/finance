@@ -64,7 +64,8 @@ let routes = {
     '/payments/:type': 'payments',
     '/balance': 'balance',
     '/categories-list': 'categories',
-    '/category/:categoryId': 'category'
+    '/category/:categoryId': 'category',
+    '/payment/:paymentId': 'payment'
 };
 
 for (let route in routes) {

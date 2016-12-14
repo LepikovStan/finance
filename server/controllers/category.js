@@ -3,7 +3,13 @@ let fs = require('fs');
 
 module.exports = class extends Controller {
     delete(req, res) {
-        let {categoryId} = req.params
+        let {categoryId} = req.params;
+        categoryId = Number(categoryId);
+
+        if (isNaN(categoryId)) {
+            let error = new TypeError('There is wrong type of categoryId to delete it')
+            return res.json({ status: 'error', message: error.message });
+        }
 
         this
             .getService('Categories')
@@ -17,9 +23,18 @@ module.exports = class extends Controller {
     }
 
     post(req, res) {
+        let {categoryId} = req.params
+
+        if (categoryId !== 'new') {
+            let error = new TypeError('There is wrong type of categoryId to create it')
+            return res.json({ status: 'error', message: error.message });
+        }
+
+        let category = {name: req.body.categoryName, income: true, outgo: true};
+
         this
             .getService('Categories')
-            .add({name: req.body.categoryName, income: true, outgo: true})
+            .add(category)
             .then((category) => {
                 res.json({ status: 'ok', result: category });
             })
@@ -29,10 +44,18 @@ module.exports = class extends Controller {
     }
 
     put(req, res) {
+        let {categoryId} = req.params;
+        categoryId = Number(categoryId);
+
+        if (isNaN(categoryId)) {
+            let error = new TypeError('There is wrong type of categoryId to change it')
+            return res.json({ status: 'error', message: error.message });
+        }
+
         let category = req.body.category
 
         if (!category.id) {
-            let error = new ReferenceError('Parameter id is mandatory for changing category');
+            let error = new ReferenceError('Parameter `id` is mandatory for changing category');
             res.json({
                 status: 'error',
                 message: error.message

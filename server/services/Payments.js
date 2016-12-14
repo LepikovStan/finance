@@ -6,6 +6,21 @@ class Categories extends Service {
             .getModel('Payments')
             .getAll();
     }
+
+    add(payment) {
+        return new Promise((resolve, reject) => {
+            this
+                .getModel('Payments')
+                .add(payment)
+                .then((result) => {
+                    payment.id = result.insertId;
+                    resolve(payment);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        });
+    }
 };
 
 module.exports = (app) => {

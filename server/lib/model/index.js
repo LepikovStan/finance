@@ -2,6 +2,7 @@ const Service = require('../service');
 
 module.exports = class extends Service {
     query(query) {
+        console.log(query);
         return new Promise((resolve, reject) => {
             this
                 .getDb()
@@ -13,7 +14,7 @@ module.exports = class extends Service {
                         }
                         return resolve(result);
                     });
-                
+
         });
     }
 };

@@ -25,14 +25,20 @@ module.exports = class extends React.Component {
         $.get(`/payments/${type}/${query}`)
             .then(({status, result: payments}) => {
                 if (status === 'ok')  {
-                    this.setState({
+                    store.dispatch({
+                        type: 'getPayments',
                         payments
-                    });
+                    })
                 }
             });
     }
 
     componentWillMount() {
+        store.subscribe(() => {
+            this.setState({
+                payments: store.getState().payments
+            })
+        })
         this.getPayments();
     }
 
@@ -40,7 +46,7 @@ module.exports = class extends React.Component {
         let payments = this.state.payments,
             content;
 
-        if (payments.length) {
+        if (payments && payments.length) {
             payments.map((payment) => {
                 let date = moment(new Date(payment.time));
                 if (!payment.date){
