@@ -9,17 +9,34 @@ class Categories extends Service {
 
     add(payment) {
         return new Promise((resolve, reject) => {
-            this
-                .getModel('Payments')
-                .add(payment)
-                .then((result) => {
-                    payment.id = result.insertId;
-                    resolve(payment);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        });
+            Promise.all([
+                this.getModel('Payments').add(payment),
+                this.getModel('Categories').getById(payment.categoryId)
+            ])
+            .then(([paymentResult, categories]) => {
+                let category = categories[0];
+
+                payment.id = paymentResult.insertId;
+                payment.category_name = category.name;
+                resolve(payment);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        })
+
+        // return new Promise((resolve, reject) => {
+        //     this
+        //         .getModel('Payments')
+        //         .add(payment)
+        //         .then((result) => {
+        //             payment.id = result.insertId;
+        //             resolve(payment);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         })
+        // });
     }
 };
 

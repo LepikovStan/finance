@@ -7,6 +7,12 @@ class Categories extends Model {
         );
     }
 
+    getById(category_id) {
+        return this.query(
+            `select * from categories where id=${category_id}`
+        );
+    }
+
     add(params) {
         return this.query(
             `insert into categories
