@@ -10,6 +10,28 @@ class Categories extends Model {
         );
     }
 
+    getLast() {
+        return this.query(
+            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
+            from payments as p
+            join categories as c
+            on p.category_id = c.id
+            where p.date <= NOW()
+            order by p.date desc`
+        );
+    }
+
+    getFuture() {
+        return this.query(
+            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
+            from payments as p
+            join categories as c
+            on p.category_id = c.id
+            where p.date > NOW()
+            order by p.date asc`
+        );
+    }
+
     add(params) {
         return this.query(
             `insert into payments

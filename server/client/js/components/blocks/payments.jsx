@@ -8,14 +8,15 @@ module.exports = class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            payments: []
+            payments: [],
+            type: this.props.type || 'list',
+            filter: this.props.filter
         }
     }
 
     getPayments() {
-        let type = this.props.type || 'list';
-        let filter = this.props.filter;
-        let query = '';
+        let {type, filter} = this.state,
+            query = '';
 
         if (filter) {
             query = querystring.stringify({filter});
@@ -27,6 +28,7 @@ module.exports = class extends React.Component {
                 if (status === 'ok')  {
                     store.dispatch({
                         type: 'getPayments',
+                        paymentsType: type,
                         payments
                     })
                 }
@@ -36,7 +38,7 @@ module.exports = class extends React.Component {
     componentWillMount() {
         store.subscribe(() => {
             this.setState({
-                payments: store.getState().payments
+                payments: store.getState().payments[this.state.type]
             })
         })
         this.getPayments();

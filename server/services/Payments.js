@@ -7,6 +7,18 @@ class Categories extends Service {
             .getAll();
     }
 
+    getLast() {
+        return this
+            .getModel('Payments')
+            .getLast();
+    }
+
+    getFuture() {
+        return this
+            .getModel('Payments')
+            .getFuture();
+    }
+
     add(payment) {
         return new Promise((resolve, reject) => {
             Promise.all([

@@ -94,7 +94,7 @@ module.exports = class extends React.Component {
 
     changePaymentValue() {
         this.setState({
-            paymentValue: this.paymentValueField.value
+            paymentValue: Number(this.paymentValueField.value)
         })
     }
 
@@ -111,7 +111,6 @@ module.exports = class extends React.Component {
 
     resetForm() {
         this.setState(this.getInitState());
-        this.form.reset();
     }
 
     onSubmit(e) {
@@ -156,7 +155,13 @@ module.exports = class extends React.Component {
                                 .keys(this.state.paymentTypes)
                                 .map((name) => {
                                     let paymentType = this.state.paymentTypes[name],
-                                        disabled = !category[name];
+                                        disabled = !category[name],
+                                        checked = (paymentType.checked && !disabled) || !disabled;
+
+                                    if (checked) {
+                                        this.state.currentPaymentType = name;
+                                        paymentType.checked = true;
+                                    }
 
                                     return (
                                         <label key={name}>
@@ -166,7 +171,7 @@ module.exports = class extends React.Component {
                                                 value={name}
                                                 disabled={disabled}
                                                 name="changePaymentType"
-                                                checked={paymentType.checked} />
+                                                checked={checked} />
                                         </label>
                                     )
                                 });
