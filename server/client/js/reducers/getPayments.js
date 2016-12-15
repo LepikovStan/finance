@@ -1,10 +1,4 @@
 module.exports = (state, action) => {
-    if (!state.payments) {
-        state.payments = {
-            last: [],
-            future: []
-        }
-    }
     let {paymentsType} = action;
 
     if (!state.payments[paymentsType]) {

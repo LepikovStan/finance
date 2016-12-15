@@ -117,9 +117,9 @@ module.exports = class extends React.Component {
         e.preventDefault()
         let params = {
             date: this.state.date,
-            amount: this.state.paymentValue,
+            amount: Number(this.state.paymentValue),
             type: this.state.currentPaymentType,
-            categoryId: this.state.paymentCategoryId
+            categoryId: Number(this.state.paymentCategoryId)
         }
 
         $.ajax({

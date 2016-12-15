@@ -1,6 +1,6 @@
 let Model = require('../lib/model');
 
-class Categories extends Model {
+class NewModel extends Model {
     getAll() {
         return this.query(
             `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
@@ -42,5 +42,5 @@ class Categories extends Model {
 };
 
 module.exports = (app) => {
-    return new Categories(app);
+    return new NewModel(app);
 }

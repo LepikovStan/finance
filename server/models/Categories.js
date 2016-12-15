@@ -1,6 +1,6 @@
 let Model = require('../lib/model');
 
-class Categories extends Model {
+class NewModel extends Model {
     getAll() {
         return this.query(
             'select * from categories where id != 1;'
@@ -37,5 +37,5 @@ class Categories extends Model {
 };
 
 module.exports = (app) => {
-    return new Categories(app);
+    return new NewModel(app);
 }

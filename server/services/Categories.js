@@ -1,6 +1,6 @@
 let Service = require('../lib/service');
 
-class Categories extends Service {
+class NewService extends Service {
     getAll() {
         return this
             .getModel('Categories')
@@ -39,5 +39,5 @@ class Categories extends Service {
 };
 
 module.exports = (app) => {
-    return new Categories(app)
+    return new NewService(app)
 }
