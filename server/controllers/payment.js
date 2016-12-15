@@ -1,5 +1,6 @@
-let Controller = require('../lib/controller');
-let fs = require('fs');
+const Controller = require('../lib/controller');
+const fs = require('fs');
+const _ = require('lodash')
 
 module.exports = class extends Controller {
     delete(req, res) {
@@ -17,11 +18,13 @@ module.exports = class extends Controller {
     }
 
     post(req, res) {
-        let payment = req.body;
+        let payment = req.body,
+            Balance = this.getService('Balance');
 
         this
             .getService('Payments')
             .add(payment)
+            .then(Balance.update(payment))
             .then((payment) => {
                 res.json({ status: 'ok', result: payment });
             })

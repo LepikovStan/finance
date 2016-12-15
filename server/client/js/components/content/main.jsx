@@ -1,4 +1,4 @@
-const Balance = require('components/balance');
+const Balance = require('components/blocks/balance');
 const Payments = require('components/blocks/payments');
 const Hgroup = require('components/elements/hgroup');
 

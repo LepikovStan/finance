@@ -2,5 +2,9 @@ module.exports = {
     mainmenu: {
         active: location.pathname || ''
     },
-    categories: []
+    categories: [],
+    payments: {
+        last: [],
+        future: []
+    }
 }
