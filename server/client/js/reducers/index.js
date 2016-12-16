@@ -6,7 +6,8 @@ const reducers = {
     getCategories: require('./getCategories'),
     addCategory: require('./addCategory'),
     addPayment: require('./addPayment'),
-    getPayments: require('./getPayments')
+    getPayments: require('./getPayments'),
+    deletePayment: require('./deletePayment')
 }
 
 module.exports = (state = initState, action) => {

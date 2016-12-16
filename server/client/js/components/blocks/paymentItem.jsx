@@ -6,7 +6,8 @@ module.exports = class extends React.Component {
         super(props);
 
         this.state = {
-            key: this.props.id,
+            id: this.props.id,
+            type: this.props.type,
             categoryName: this.props.categoryName,
             categoryId: this.props.categoryId,
             amount: this.props.amount,
@@ -30,15 +31,29 @@ module.exports = class extends React.Component {
         this.setState({editing: true})
     }
 
-    delete() {
+    delete(paymentId, paymentType) {
+        console.log('paymentId', paymentId, paymentType)
+        store.dispatch({
+            type: 'deletePayment',
+            paymentId,
+            paymentType
+        })
+    }
+
+    save() {
 
     }
 
+    cancel() {
+        this.setState({editing: false})
+    }
+
     render() {
-        let {key, date, categoryName, amount, categoryId} = this.state,
+        let {id, date, categoryName, amount, categoryId, type} = this.state,
             dateCell,
             amountCell,
             categoryCell,
+            editButtons = '',
             categoriesOptions = this.state.categories.map((category) => {
                 return <option key={category.id} value={category.id}>{category.name}</option>
             });
@@ -50,6 +65,10 @@ module.exports = class extends React.Component {
             categoryCell = <select defaultValue={categoryId}>
                                 {categoriesOptions}
                             </select>
+            editButtons = <div>
+                            <button onClick={this.save.bind(this)}>сохранить</button>
+                            <button onClick={this.cancel.bind(this)}>отмена</button>
+                        </div>
         } else {
             dateCell = date.format('LL');
             amountCell = amount;
@@ -57,13 +76,14 @@ module.exports = class extends React.Component {
         }
 
         return (
-            <tr key={key}>
+            <tr key={id}>
                 <td key={1}>{dateCell}</td>
                 <td key={2}>{categoryCell}</td>
                 <td key={3}>{amountCell}</td>
                 <td key={4}>
-                    <button onClick={this.edit.bind(this)}>редактировать</button>
-                    <button onClick={this.delete.bind(this)}>удалить</button>
+                    {editButtons}
+                    <button onClick={this.edit.bind(this, id)}>редактировать</button>
+                    <button onClick={this.delete.bind(this, id, type)}>удалить</button>
                 </td>
             </tr>
         );

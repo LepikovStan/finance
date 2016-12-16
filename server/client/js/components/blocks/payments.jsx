@@ -56,6 +56,7 @@ module.exports = class extends React.Component {
                         key={key}
                         id={payment.id}
                         date={payment.date}
+                        type={this.state.type}
                         amount={payment.amount}
                         categoryName={payment.categoryName}
                         categoryId={payment.categoryId} />
