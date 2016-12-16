@@ -3,7 +3,7 @@ let Model = require('../lib/model');
 class NewModel extends Model {
     getAll() {
         return this.query(
-            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
+            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as categoryName, c.id as categoryId
             from payments as p
             join categories as c
             on p.category_id = c.id`
@@ -12,7 +12,7 @@ class NewModel extends Model {
 
     getLast() {
         return this.query(
-            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
+            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as categoryName, c.id as categoryId
             from payments as p
             join categories as c
             on p.category_id = c.id
@@ -23,7 +23,7 @@ class NewModel extends Model {
 
     getFuture() {
         return this.query(
-            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as category_name
+            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as categoryName, c.id as categoryId
             from payments as p
             join categories as c
             on p.category_id = c.id

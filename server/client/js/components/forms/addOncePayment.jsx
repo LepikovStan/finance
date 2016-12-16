@@ -102,7 +102,6 @@ module.exports = class extends React.Component {
         let categories = this.state.categories,
             categoryId = this.getCategoryId();
 
-
         this.setState({
             paymentCategory: _.find(categories, {id: categoryId}),
             paymentCategoryId: categoryId

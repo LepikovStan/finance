@@ -28,8 +28,7 @@ table {
   table tr:first-child td {
     border: 0; }
   table tr:hover td {
-    background: #eee;
-    cursor: pointer; }
+    background: #eee; }
   table.full {
     width: 100%; }
 
@@ -60,6 +59,8 @@ h3 {
 .cols {
   display: flex;
   justify-content: space-between; }
+  .cols.cols3 .col {
+    width: 30%; }
   .cols .col {
     width: 45%; }
 
@@ -152,8 +153,3 @@ footer {
 
 .add-category + .categories-list {
   margin: 40px 0 0; }
-
-.b-payments .col {
-  width: 60%; }
-  .b-payments .col + .col {
-    width: 30%; }

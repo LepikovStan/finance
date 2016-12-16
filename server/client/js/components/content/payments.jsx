@@ -1,6 +1,5 @@
 const Payments = require('components/blocks/payments');
 const AddOncePaymentForm = require('components/forms/addOncePayment');
-const { Tabs, TabList, Tab, TabPanel } = require("@blueprintjs/core");
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -12,23 +11,13 @@ module.exports = class extends React.Component {
         return (
             <div className="content b-payments">
                 <h2>Платежи</h2>
+                <AddOncePaymentForm />
                 <div className="cols">
                     <div className="col">
-                        <Tabs>
-                            <TabList>
-                                <Tab>Прошедшие</Tab>
-                                <Tab>Предстоящие</Tab>
-                            </TabList>
-                            <TabPanel>
-                                <Payments type="last" filter="15" />
-                            </TabPanel>
-                            <TabPanel>
-                                <Payments type="future" filter="15" />
-                            </TabPanel>
-                        </Tabs>
+                        <Payments type="last" filter="15" />
                     </div>
                     <div className="col">
-                        <AddOncePaymentForm />
+                        <Payments type="future" filter="15" />
                     </div>
                 </div>
             </div>
