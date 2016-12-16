@@ -8,14 +8,13 @@ module.exports = class extends React.Component {
                 <tbody>
                     {
                         this.props.payments.map((payment, index) => {
-                            let date = moment(payment.date).format('LL'),
-                                amount = payment.type === 'outgo' ? `-${payment.amount}` : payment.amount;
+                            let date = moment(payment.date).format('LL');
 
                             return (<Row
                                 key={payment.id}
                                 date={date}
                                 category={payment.category_name}
-                                amount={amount}
+                                amount={payment.amount}
                             />);
                         })
                     }

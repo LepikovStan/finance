@@ -20,6 +20,10 @@ class NewService extends Service {
     }
 
     add(payment) {
+        if (payment.type === 'outgo') {
+            payment.amount = -Math.abs(payment.amount)
+        }
+
         return new Promise((resolve, reject) => {
             Promise.all([
                 this.getModel('Payments').add(payment),

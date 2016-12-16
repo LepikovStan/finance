@@ -2,7 +2,8 @@ const { Link } = require('react-router');
 const menulist = {
     "/": "Панель",
     "/payments": "Платежи",
-    "/categories": "Категории"
+    "/categories": "Категории",
+    "/reports": "Отчёты"
 };
 
 module.exports = class extends React.Component {

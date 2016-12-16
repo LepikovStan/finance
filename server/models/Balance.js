@@ -3,7 +3,7 @@ let Model = require('../lib/model');
 class NewModel extends Model {
     getBalance() {
         return this.query(
-            'select * from balance where user_id = 0'
+            'select sum(amount) as balance, date from payments where user_id = 0 group by date'
         )
     }
 
