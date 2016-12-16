@@ -1,6 +1,6 @@
 const ReactHighcharts = require('react-highcharts');
 const Highcharts = require('highcharts');
-const minTickInterval = 7 * 24 * 3600 * 1000;
+const minTickInterval = 24 * 3600 * 1000;
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -37,13 +37,12 @@ module.exports = class extends React.Component {
             title: null,
             xAxis: {
                 title: null,
-                categories: ['Янв', 'Фев', 'Мар', 'Апр', 'Мая', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                 labels: {
                     formatter() {
                         return Highcharts.dateFormat("%e %b %y", this.value);
                     }
                 },
-                minTickInterval: minTickInterval
+                tickInterval: 1
             },
             yAxis: {
                 title: null

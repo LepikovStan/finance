@@ -9,7 +9,6 @@ class NewModel extends Model {
 
     update(params) {
         return new Promise((resolve, reject) => {
-            console.log(params);
             let updateBalanceQuery = '';
 
             if (params.type === 'outgo') {

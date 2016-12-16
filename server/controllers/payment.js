@@ -24,7 +24,7 @@ module.exports = class extends Controller {
         this
             .getService('Payments')
             .add(payment)
-            .then(Balance.update(payment))
+            // .then(Balance.update(payment))
             .then((payment) => {
                 res.json({ status: 'ok', result: payment });
             })
