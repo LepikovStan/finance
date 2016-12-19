@@ -16,7 +16,7 @@ module.exports = class extends React.Component {
     }
 
     changeCategory(category) {
-        return $.ajax({
+        $.ajax({
             url: `/category/${category.id}`,
             method: 'PUT',
             data: {

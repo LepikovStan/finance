@@ -8,7 +8,7 @@ module.exports = class extends React.Component {
         this.state = {
             categories: [],
             editing: false
-        }
+        };
     }
 
     componentWillMount() {
@@ -44,12 +44,53 @@ module.exports = class extends React.Component {
         });
     }
 
-    save() {
-
-    }
-
     cancel() {
         this.setState({editing: false})
+    }
+
+    changePayment() {
+        let payment = {
+            categoryId: this.getCategoryId(),
+            date: this.dateInput.value,
+            amount: this.amountInput.value
+        }
+        console.log('payment', payment);
+
+        /*store.dispatch({
+            type: 'changePayment',
+            payment
+        })*/
+        /*$.ajax({
+            url: `/payment/${payment.id}`,
+            method: 'PUT',
+            data: {
+                category
+            }
+        })
+        .then((res) => {
+            if (res.status === 'ok') {
+                store.dispatch({
+                    type: 'changePayment',
+                    category
+                })
+                this.setState({
+                    editing: false
+                })
+            } else {
+                throw new Error(res.message)
+            }
+        })
+        .catch((error) => {
+            console.error('error', error)
+        });*/
+    }
+
+    getCategoryId() {
+        if (!this.categorySelect || !this.categorySelect.options.length || this.categorySelect.selectedIndex < 0) {
+            return undefined;
+        }
+
+        return this.categorySelect.options[this.categorySelect.selectedIndex].value
     }
 
     render() {
@@ -64,13 +105,13 @@ module.exports = class extends React.Component {
 
         date = moment(date);
         if (this.state.editing) {
-            dateCell = <input type="date" value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} />
-            amountCell = <input type="number" value="" placeholder={amount} />
-            categoryCell = <select defaultValue={categoryId}>
+            dateCell = <input type="date" value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} ref={(dateInput) => {this.dateInput = dateInput}} />
+            amountCell = <input type="number" value="" placeholder={amount} ref={(amountInput) => this.amountInput = amountInput} />
+            categoryCell = <select defaultValue={categoryId} disabled ref={(categorySelect) => this.categorySelect = categorySelect}>
                                 {categoriesOptions}
                             </select>
             editButtons = <div>
-                            <button onClick={this.save.bind(this)}>сохранить</button>
+                            <button onClick={this.changePayment.bind(this)}>сохранить</button>
                             <button onClick={this.cancel.bind(this)}>отмена</button>
                         </div>
         } else {
