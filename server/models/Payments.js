@@ -21,6 +21,12 @@ class NewModel extends Model {
         );
     }
 
+    delete(params) {
+        return this.query(
+            `delete from payments where id=${params.id}`
+        );
+    }
+
     getFuture() {
         return this.query(
             `select p.id, p.user_id, p.type, p.amount, p.date, c.name as categoryName, c.id as categoryId

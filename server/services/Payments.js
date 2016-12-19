@@ -19,6 +19,12 @@ class NewService extends Service {
             .getFuture();
     }
 
+    delete(payment) {
+        return this
+            .getModel('Payments')
+            .delete(payment)
+    }
+
     add(payment) {
         if (payment.type === 'outgo') {
             payment.amount = -Math.abs(payment.amount)

@@ -4,17 +4,23 @@ const _ = require('lodash')
 
 module.exports = class extends Controller {
     delete(req, res) {
-        // let {categoryId} = req.params
-        //
-        // this
-        //     .getService('Categories')
-        //     .delete({id: categoryId})
-        //     .then((result) => {
-        //         res.json({ status: 'ok' });
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     })
+        let {paymentId} = req.params;
+        paymentId = Number(paymentId);
+
+        if (isNaN(paymentId)) {
+            let error = new TypeError('There is wrong type of paymentId to delete it')
+            return res.json({ status: 'error', message: error.message });
+        }
+
+        this
+            .getService('Payments')
+            .delete({id: paymentId})
+            .then((result) => {
+                res.json({ status: 'ok' });
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
     post(req, res) {

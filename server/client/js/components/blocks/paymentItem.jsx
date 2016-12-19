@@ -6,12 +6,6 @@ module.exports = class extends React.Component {
         super(props);
 
         this.state = {
-            id: this.props.id,
-            type: this.props.type,
-            categoryName: this.props.categoryName,
-            categoryId: this.props.categoryId,
-            amount: this.props.amount,
-            date: this.props.date,
             categories: [],
             editing: false
         }
@@ -32,12 +26,22 @@ module.exports = class extends React.Component {
     }
 
     delete(paymentId, paymentType) {
-        console.log('paymentId', paymentId, paymentType)
-        store.dispatch({
-            type: 'deletePayment',
-            paymentId,
-            paymentType
+        $.ajax({
+            url: `/payment/${paymentId}`,
+            method: 'DELETE'
         })
+        .then(({status}) => {
+            if (status) {
+                store.dispatch({
+                    type: 'deletePayment',
+                    paymentId,
+                    paymentType
+                })
+            }
+        })
+        .catch((error) => {
+            console.log('error', error)
+        });
     }
 
     save() {
@@ -49,7 +53,7 @@ module.exports = class extends React.Component {
     }
 
     render() {
-        let {id, date, categoryName, amount, categoryId, type} = this.state,
+        let {id, date, categoryName, amount, categoryId, type} = this.props,
             dateCell,
             amountCell,
             categoryCell,
