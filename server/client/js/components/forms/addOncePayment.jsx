@@ -1,4 +1,5 @@
 const moment = require('moment');
+const CategoriesField = require('components/blocks/categoriesField')
 
 module.exports = class extends React.Component {
     constructor(props) {
@@ -7,88 +8,20 @@ module.exports = class extends React.Component {
 
         this.state = {
             date: today,
-            paymentValue: '',
-            paymentCategory: {},
-            paymentCategoryId: '',
-            paymentTypes: {
-                income: {
-                    label: 'Доход',
-                    checked: true
-                },
-                outgo: {
-                    label: 'Расход',
-                    checked: false
-                }
-            },
-            currentPaymentType: 'income'
+            paymentValue: ''
         }
     }
 
     getInitState() {
         return {
             date: moment().format("YYYY-MM-DD"),
-            paymentValue: 0,
-            categoryId: this.state.categories[0]['id']
+            paymentValue: 0
         };
-    }
-
-    componentWillMount() {
-        store.subscribe(() => {
-            let categories = store.getState().categories;
-
-            this.setState({
-                categories: store.getState().categories,
-            })
-            let categoryId = this.getCategoryId();
-
-            this.setState({
-                paymentCategory: _.find(categories, {id: categoryId}),
-                paymentCategoryId: categoryId
-            });
-        })
-        this.getCategories()
-    }
-
-    getCategoryId() {
-        if (!this.categoryIdField) {
-            return undefined;
-        }
-
-        return Number(this.categoryIdField.options[this.categoryIdField.selectedIndex].value);
-    }
-
-    getCategories() {
-        $.get('/categories-list')
-            .then(({status, result: categories}) => {
-                store.dispatch({
-                    type: 'getCategories',
-                    categories
-                })
-            });
     }
 
     changeDate() {
         this.setState({
             date: this.dateField.value
-        })
-    }
-
-    changePaymentType(paymentTypes, e) {
-        let paymentType = e.target.value;
-
-        Object
-            .keys(paymentTypes)
-            .map((name) => {
-                if (name === paymentType) {
-                    this.state.currentPaymentType = name
-                    paymentTypes[name].checked = true
-                } else {
-                    paymentTypes[name].checked = false
-                }
-            });
-
-        this.setState({
-            paymentTypes
         })
     }
 
@@ -98,33 +31,29 @@ module.exports = class extends React.Component {
         })
     }
 
-    changeCategoryId() {
-        let categories = this.state.categories,
-            categoryId = this.getCategoryId();
-
-        this.setState({
-            paymentCategory: _.find(categories, {id: categoryId}),
-            paymentCategoryId: categoryId
-        });
-    }
-
     resetForm() {
         this.setState(this.getInitState());
     }
 
+    changeCategoryParams(params) {
+        this.params = Object.assign({}, this.params, {
+            type: params.categoryType,
+            categoryId: params.categoryId
+        })
+    }
+
     onSubmit(e) {
         e.preventDefault()
-        let params = {
+
+        this.params = Object.assign({}, this.params, {
             date: this.state.date,
-            amount: Number(this.state.paymentValue),
-            type: this.state.currentPaymentType,
-            categoryId: Number(this.state.paymentCategoryId)
-        }
+            amount: Number(this.state.paymentValue)
+        })
 
         $.ajax({
             url: '/payment/new',
             method: 'POST',
-            data: params
+            data: this.params
         })
         .then(({status, result: payment}) => {
             if (status === 'ok'){
@@ -141,53 +70,12 @@ module.exports = class extends React.Component {
     }
 
     render() {
-        if (!this.state.categories) {
-            return <div></div>
-        }
-
-        let categoriesOptions = this.state.categories.map((category) => {
-                return <option key={category.id} value={category.id}>{category.name}</option>
-            }),
-            category = this.state.paymentCategory,
-            paymentTypes = _.clone(this.state.paymentTypes),
-            paymentTypesElems = Object
-                                .keys(this.state.paymentTypes)
-                                .map((name) => {
-                                    let paymentType = this.state.paymentTypes[name],
-                                        disabled = !category[name],
-                                        checked = (paymentType.checked && !disabled) || !disabled;
-
-                                    if (checked) {
-                                        this.state.currentPaymentType = name;
-                                        paymentType.checked = true;
-                                    }
-
-                                    return (
-                                        <label key={name}>
-                                            {paymentType.label}
-                                            <input
-                                                type="radio"
-                                                value={name}
-                                                disabled={disabled}
-                                                name="changePaymentType"
-                                                checked={checked} />
-                                        </label>
-                                    )
-                                });
-
         return (
             <form className="add-payment" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
                 <fieldset>
                     <input type="date" value={this.state.date} defaultValue={moment().format("YYYY-MM-DD")} onChange={this.changeDate.bind(this)} ref={ (input) => this.dateField = input } />
                 </fieldset>
-                <fieldset onChange={this.changePaymentType.bind(this, paymentTypes)}>
-                    {paymentTypesElems}
-                </fieldset>
-                <fieldset>
-                    <select onChange={this.changeCategoryId.bind(this)} ref={ (select) => this.categoryIdField = select }>
-                        {categoriesOptions}
-                    </select>
-                </fieldset>
+                <CategoriesField changeCategoryParams={this.changeCategoryParams.bind(this)} />
                 <fieldset>
                     <input
                         type="number"

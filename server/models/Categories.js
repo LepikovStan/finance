@@ -7,6 +7,18 @@ class NewModel extends Model {
         );
     }
 
+    getIncome() {
+        return this.query(
+            'select * from categories where id != 1 and income = 1;'
+        );
+    }
+
+    getOutgo() {
+        return this.query(
+            'select * from categories where id != 1 and outgo = 1;'
+        );
+    }
+
     getById(category_id) {
         return this.query(
             `select * from categories where id=${category_id}`

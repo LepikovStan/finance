@@ -41,7 +41,7 @@ class NewService extends Service {
                 let category = categories[0];
 
                 payment.id = paymentResult.insertId;
-                payment.category_name = category.name;
+                payment.categoryName = category.name;
                 resolve(payment);
             })
             .catch((error) => {

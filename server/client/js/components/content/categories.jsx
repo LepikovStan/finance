@@ -8,7 +8,7 @@ module.exports = class extends React.Component {
     }
 
     getCategories() {
-        $.get('/categories-list')
+        $.get('/categories/list')
             .then(({status, result: categories}) => {
                 if (status === 'ok'){
                     store.dispatch({

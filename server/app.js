@@ -63,7 +63,7 @@ app.use(bodyParser.json({limit: '10mb'}))
 let routes = {
     '/payments/:type': 'payments',
     '/balance': 'balance',
-    '/categories-list': 'categories',
+    '/categories/list': 'categories',
     '/category/:categoryId': 'category',
     '/payment/:paymentId': 'payment'
 };

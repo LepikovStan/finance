@@ -7,6 +7,21 @@ class NewService extends Service {
             .getAll();
     }
 
+    getAllByTypes() {
+        return new Promise((resolve, reject) => {
+            Promise.all([
+                    this.getModel('Categories').getIncome(),
+                    this.getModel('Categories').getOutgo()
+                ])
+                .then(([incomeCategories, outgoCategories]) => {
+                    resolve({
+                        income: incomeCategories,
+                        outgo: outgoCategories
+                    })
+                })
+        });
+    }
+
     add(category) {
         return new Promise((resolve, reject) => {
             this

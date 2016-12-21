@@ -3,6 +3,10 @@ module.exports = {
         active: location.pathname || ''
     },
     categories: [],
+    categoriesByType: {
+        income: [],
+        outgo: []
+    },
     payments: {
         last: [],
         future: []

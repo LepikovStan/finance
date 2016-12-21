@@ -1,4 +1,5 @@
 const moment = require('moment');
+const CategoriesField = require('components/blocks/categoriesField')
 
 module.exports = class extends React.Component {
 
@@ -54,7 +55,6 @@ module.exports = class extends React.Component {
             date: this.dateInput.value,
             amount: this.amountInput.value
         }
-        console.log('payment', payment);
 
         /*store.dispatch({
             type: 'changePayment',
@@ -93,23 +93,22 @@ module.exports = class extends React.Component {
         return this.categorySelect.options[this.categorySelect.selectedIndex].value
     }
 
+    changeCategoryParams(params) {
+        
+    }
+
     render() {
         let {id, date, categoryName, amount, categoryId, type} = this.props,
             dateCell,
             amountCell,
             categoryCell,
-            editButtons = '',
-            categoriesOptions = this.state.categories.map((category) => {
-                return <option key={category.id} value={category.id}>{category.name}</option>
-            });
+            editButtons = '';
 
         date = moment(date);
         if (this.state.editing) {
             dateCell = <input type="date" value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} ref={(dateInput) => {this.dateInput = dateInput}} />
             amountCell = <input type="number" value="" placeholder={amount} ref={(amountInput) => this.amountInput = amountInput} />
-            categoryCell = <select defaultValue={categoryId} disabled ref={(categorySelect) => this.categorySelect = categorySelect}>
-                                {categoriesOptions}
-                            </select>
+            categoryCell = <CategoriesField changeCategoryParams={this.changeCategoryParams.bind(this)} />
             editButtons = <div>
                             <button onClick={this.changePayment.bind(this)}>сохранить</button>
                             <button onClick={this.cancel.bind(this)}>отмена</button>

@@ -4,6 +4,7 @@ const reducers = {
     changeCategory: require('./changeCategory'),
     deleteCategory: require('./deleteCategory'),
     getCategories: require('./getCategories'),
+    getCategoriesByType: require('./getCategoriesByType'),
     addCategory: require('./addCategory'),
     addPayment: require('./addPayment'),
     getPayments: require('./getPayments'),
