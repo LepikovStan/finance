@@ -25,6 +25,12 @@ module.exports = (state, action) => {
         expiredPayment = _.find(state.payments.future, {id: paymentId})
     }
 
+    if (payment.type === 'outgo') {
+        payment.amount = -Math.abs(payment.amount)
+    } else {
+        payment.amount = Math.abs(payment.amount)
+    }
+
     if (expiredPaymentIsLast) {
         payments = state.payments.last;
     } else {
@@ -50,7 +56,6 @@ module.exports = (state, action) => {
                 return -1;
             }
         })
-        console.log('state.payments.last', state.payments.last)
     } else {
         state.payments.future.push(payment);
         state.payments.future.sort((a, b) => {

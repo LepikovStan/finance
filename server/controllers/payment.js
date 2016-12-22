@@ -40,26 +40,26 @@ module.exports = class extends Controller {
     }
 
     put(req, res) {
-        // let category = req.body.category
-        //
-        // if (!category.id) {
-        //     let error = new ReferenceError('Parameter id is mandatory for changing category');
-        //     res.json({
-        //         status: 'error',
-        //         message: error.message
-        //     });
-        //     console.error(error)
-        //     return
-        // }
-        //
-        // this
-        //     .getService('Categories')
-        //     .change(category)
-        //     .then((result) => {
-        //         res.json({ status: 'ok', result: req.body.category });
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
+        let payment = req.body.payment
+        
+        if (!payment.id) {
+            let error = new ReferenceError('Parameter id is mandatory for changing payment');
+            res.json({
+                status: 'error',
+                message: error.message
+            });
+            console.error(error)
+            return
+        }
+
+        this
+            .getService('Payments')
+            .change(payment)
+            .then((result) => {
+                res.json({ status: 'ok', result: payment });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 }

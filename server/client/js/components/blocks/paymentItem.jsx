@@ -57,29 +57,19 @@ module.exports = class extends React.Component {
             date: this.dateInput.value,
             amount
         })
-        //Object.assign(this.props, this.payment);
 
-        store.dispatch({
-            type: 'changePayment',
-            payment: this.payment
-        })
-
-        this.setState({
-            editing: false
-        })
-        console.log(this.payment);
-        /*$.ajax({
-            url: `/payment/${payment.id}`,
+        $.ajax({
+            url: `/payment/${this.payment.id}`,
             method: 'PUT',
             data: {
-                category
+                payment: this.payment
             }
         })
         .then((res) => {
             if (res.status === 'ok') {
                 store.dispatch({
                     type: 'changePayment',
-                    category
+                    payment: this.payment
                 })
                 this.setState({
                     editing: false
@@ -90,13 +80,13 @@ module.exports = class extends React.Component {
         })
         .catch((error) => {
             console.error('error', error)
-        });*/
+        });
     }
 
     changeCategoryParams(params) {
         this.payment = Object.assign({}, this.payment, {
-            categoryId: params.categoryId,
-            paymentType: params.paymentType,
+            categoryId: Number(params.categoryId),
+            type: params.paymentType,
             categoryName: params.categoryName
         });
     }
@@ -119,6 +109,11 @@ module.exports = class extends React.Component {
             amountCell,
             categoryCell,
             editButtons = '';
+
+        categoryId = Number(categoryId);
+        if (this.payment && this.payment.type) {
+            paymentType = this.payment.type;
+        }
 
         date = moment(date);
         if (this.state.editing) {

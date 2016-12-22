@@ -56,6 +56,24 @@ class NewService extends Service {
             .delete(payment)
     }
 
+    change(payment) {
+        if (payment.type === 'outgo') {
+            payment.amount = -Math.abs(payment.amount)
+        } else {
+            payment.amount = Math.abs(payment.amount)
+        }
+
+        return new Promise((resolve, reject) => {
+            this
+                .getModel('Payments')
+                .change(payment)
+                .then((result) => {
+                    payment.id = result.insertId;
+                    resolve(payment);
+                })
+        });
+    }
+
     add(payment) {
         if (payment.type === 'outgo') {
             payment.amount = -Math.abs(payment.amount)

@@ -8,7 +8,7 @@ module.exports = class extends React.Component {
         this.state = {
             types: ['income', 'outgo'],
             currentType: props.paymentType || 'income',
-            categoryId: props.categoryId || 1,
+            categoryId: Number(props.categoryId) || 1,
             categoryName: props.categoryName || ''
         }
     }
@@ -32,8 +32,8 @@ module.exports = class extends React.Component {
 
             this.setState({
                 categories: categories,
-                categoryId: category.id,
-                categoryName: category.name
+                categoryId: this.props.categoryId || Number(category.id),
+                categoryName: this.props.categoryName || category.name
             })
         })
 
@@ -43,7 +43,7 @@ module.exports = class extends React.Component {
     changePaymentType(e) {
         let currentType = e.target.value,
             category = this.state.categories[currentType][0],
-            categoryId = category.id,
+            categoryId = Number(category.id),
             categoryName = category.name;
 
         this.setState({
@@ -54,7 +54,7 @@ module.exports = class extends React.Component {
     }
 
     changeCategoryId() {
-        let categoryId = this.categoryIdField.options[this.categoryIdField.selectedIndex].value,
+        let categoryId = Number(this.categoryIdField.options[this.categoryIdField.selectedIndex].value);
             categoryName = _.find(this.state.categories[this.state.currentType], {id: categoryId}).name;
 
         this.setState({
@@ -70,7 +70,7 @@ module.exports = class extends React.Component {
 
         this.props.changeCategoryParams({
             paymentType: this.state.currentType,
-            categoryId: this.state.categoryId,
+            categoryId: Number(this.state.categoryId),
             categoryName: this.state.categoryName
         })
 
