@@ -1,3 +1,5 @@
+const Reports = require('components/blocks/reports')
+
 module.exports = class extends React.Component {
     constructor(props) {
         super(props);
@@ -12,6 +14,7 @@ module.exports = class extends React.Component {
         return (
             <div className="content">
                 <h2>Отчёты</h2>
+                <Reports />
             </div>
         );
     }
