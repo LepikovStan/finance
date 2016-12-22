@@ -37,7 +37,7 @@ module.exports = class extends React.Component {
 
     changeCategoryParams(params) {
         this.params = Object.assign({}, this.params, {
-            type: params.categoryType,
+            type: params.paymentType,
             categoryId: params.categoryId
         })
     }

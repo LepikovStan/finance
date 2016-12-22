@@ -3,7 +3,7 @@ let Model = require('../lib/model');
 class NewModel extends Model {
     getAll() {
         return this.query(
-            `select p.id, p.user_id, p.type, p.amount, p.date, c.name as categoryName, c.id as categoryId
+            `select p.id, p.user_id, p.type as paymentType, p.amount, p.date, c.name as categoryName, c.id as categoryId
             from payments as p
             join categories as c
             on p.category_id = c.id`

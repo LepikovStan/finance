@@ -1,5 +1,6 @@
 const moment = require('moment');
 const CategoriesField = require('components/blocks/categoriesField')
+const _ = require('lodash')
 
 module.exports = class extends React.Component {
 
@@ -50,16 +51,23 @@ module.exports = class extends React.Component {
     }
 
     changePayment() {
-        let payment = {
-            categoryId: this.getCategoryId(),
+        let amount = this.amountInput.value || this.props.amount;
+        this.payment = Object.assign({}, this.payment, {
+            id: this.props.id,
             date: this.dateInput.value,
-            amount: this.amountInput.value
-        }
+            amount
+        })
+        //Object.assign(this.props, this.payment);
 
-        /*store.dispatch({
+        store.dispatch({
             type: 'changePayment',
-            payment
-        })*/
+            payment: this.payment
+        })
+
+        this.setState({
+            editing: false
+        })
+        console.log(this.payment);
         /*$.ajax({
             url: `/payment/${payment.id}`,
             method: 'PUT',
@@ -85,20 +93,28 @@ module.exports = class extends React.Component {
         });*/
     }
 
-    getCategoryId() {
-        if (!this.categorySelect || !this.categorySelect.options.length || this.categorySelect.selectedIndex < 0) {
-            return undefined;
-        }
-
-        return this.categorySelect.options[this.categorySelect.selectedIndex].value
+    changeCategoryParams(params) {
+        this.payment = Object.assign({}, this.payment, {
+            categoryId: params.categoryId,
+            paymentType: params.paymentType,
+            categoryName: params.categoryName
+        });
     }
 
-    changeCategoryParams(params) {
-        
+    changeAmount() {
+        this.setState({
+            amountChanged: this.amountInput.value
+        })
+    }
+
+    changeDate() {
+        this.setState({
+            date: this.dateField.value
+        })
     }
 
     render() {
-        let {id, date, categoryName, amount, categoryId, type} = this.props,
+        let {id, date, categoryName, amount, categoryId, paymentType, type} = this.props,
             dateCell,
             amountCell,
             categoryCell,
@@ -106,9 +122,9 @@ module.exports = class extends React.Component {
 
         date = moment(date);
         if (this.state.editing) {
-            dateCell = <input type="date" value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} ref={(dateInput) => {this.dateInput = dateInput}} />
-            amountCell = <input type="number" value="" placeholder={amount} ref={(amountInput) => this.amountInput = amountInput} />
-            categoryCell = <CategoriesField changeCategoryParams={this.changeCategoryParams.bind(this)} />
+            dateCell = <input type="date" onChange={this.changeDate.bind(this)} value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} ref={(dateInput) => {this.dateInput = dateInput}} />
+            amountCell = <input type="number" onChange={this.changeAmount.bind(this)} value={this.state.amountChanged} placeholder={amount} ref={(amountInput) => this.amountInput = amountInput} />
+            categoryCell = <CategoriesField paymentType={paymentType} categoryId={categoryId} categoryName={categoryName} changeCategoryParams={this.changeCategoryParams.bind(this)} />
             editButtons = <div>
                             <button onClick={this.changePayment.bind(this)}>сохранить</button>
                             <button onClick={this.cancel.bind(this)}>отмена</button>

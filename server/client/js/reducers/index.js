@@ -8,7 +8,8 @@ const reducers = {
     addCategory: require('./addCategory'),
     addPayment: require('./addPayment'),
     getPayments: require('./getPayments'),
-    deletePayment: require('./deletePayment')
+    deletePayment: require('./deletePayment'),
+    changePayment: require('./changePayment')
 }
 
 module.exports = (state = initState, action) => {

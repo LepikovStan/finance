@@ -7,8 +7,9 @@ module.exports = class extends React.Component {
 
         this.state = {
             types: ['income', 'outgo'],
-            currentType: 'income',
-            categoryId: 1
+            currentType: props.paymentType || 'income',
+            categoryId: props.categoryId || 1,
+            categoryName: props.categoryName || ''
         }
     }
 
@@ -26,11 +27,13 @@ module.exports = class extends React.Component {
 
     componentWillMount() {
         store.subscribe(() => {
-            let categories = store.getState().categoriesByType
+            let categories = store.getState().categoriesByType,
+                category = categories[this.state.currentType][0];
 
             this.setState({
                 categories: categories,
-                categoryId: categories[this.state.currentType][0].id
+                categoryId: category.id,
+                categoryName: category.name
             })
         })
 
@@ -39,19 +42,24 @@ module.exports = class extends React.Component {
 
     changePaymentType(e) {
         let currentType = e.target.value,
-            categoryId = this.state.categories[currentType][0].id;
+            category = this.state.categories[currentType][0],
+            categoryId = category.id,
+            categoryName = category.name;
 
         this.setState({
             currentType,
-            categoryId
+            categoryId,
+            categoryName
         });
     }
 
     changeCategoryId() {
-        let categoryId = this.categoryIdField.options[this.categoryIdField.selectedIndex].value;
+        let categoryId = this.categoryIdField.options[this.categoryIdField.selectedIndex].value,
+            categoryName = _.find(this.state.categories[this.state.currentType], {id: categoryId}).name;
 
         this.setState({
-            categoryId
+            categoryId,
+            categoryName
         });
     }
 
@@ -61,8 +69,9 @@ module.exports = class extends React.Component {
         }
 
         this.props.changeCategoryParams({
-            categoryType: this.state.currentType,
-            categoryId: this.state.categoryId
+            paymentType: this.state.currentType,
+            categoryId: this.state.categoryId,
+            categoryName: this.state.categoryName
         })
 
         let paymentTypeElems = this.state.types.map((type) => {

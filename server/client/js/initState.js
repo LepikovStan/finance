@@ -8,7 +8,7 @@ module.exports = {
         outgo: []
     },
     payments: {
-        last: [],
-        future: []
+        last: {},
+        future: {}
     }
 }

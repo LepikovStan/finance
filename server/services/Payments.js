@@ -1,6 +1,37 @@
 let Service = require('../lib/service');
+const _ = require ('lodash');
 
 class NewService extends Service {
+
+    sortByDate(format) {
+        return (payments) => {
+            return payments.sort((a, b) => {
+                if (new Date(b.date).getTime() > new Date(a.date).getTime()) {
+                    return format === 'desc' ? 1 : -1;
+                } else {
+                    return format === 'desc' ? -1 : 1;
+                }
+            })
+        }
+    }
+
+    prepareFormat(payments) {
+        return payments.reduce((memo, item) => {
+            memo[item.id] = item;
+            return memo;
+        }, {});
+    }
+
+    filter(filter) {
+        return (payments) => {
+            if (filter){
+                return _.slice(payments, 0, filter);
+            } else {
+                return payments;
+            }
+        }
+    }
+
     getAll() {
         return this
             .getModel('Payments')
