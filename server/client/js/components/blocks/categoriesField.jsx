@@ -54,7 +54,7 @@ module.exports = class extends React.Component {
     }
 
     changeCategoryId() {
-        let categoryId = Number(this.categoryIdField.options[this.categoryIdField.selectedIndex].value);
+        let categoryId = Number(this.categoryIdField.options[this.categoryIdField.selectedIndex].value),
             categoryName = _.find(this.state.categories[this.state.currentType], {id: categoryId}).name;
 
         this.setState({
