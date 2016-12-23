@@ -55,8 +55,14 @@ app.models = models;
 app.services = services;
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
-app.use(middlewares.logger);
+app.use(session({
+     secret: 'aeae',
+     cookie: { maxAge: 60000 },
+     resave: true,
+     saveUninitialized: true
+}))
 app.use(middlewares.user(app));
+app.use(middlewares.logger);
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))
 
