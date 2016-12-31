@@ -151,5 +151,19 @@ footer {
   .categories-list .name span {
     display: none; }
 
+.pt-tabs .pt-tab {
+  display: inline; }
+
+.auth .pt-tabs .pt-tab h2 {
+  display: inline; }
+
+.auth .pt-tabs .pt-tab + .pt-tab {
+  margin-left: 20px; }
+
+.auth .pt-tabs .pt-tab[aria-selected=false] {
+  cursor: pointer; }
+  .auth .pt-tabs .pt-tab[aria-selected=false] h2 {
+    color: #aaa; }
+
 .add-category + .categories-list {
   margin: 40px 0 0; }

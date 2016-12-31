@@ -29,7 +29,7 @@ class NewModel extends Model {
         return this.query(
             `insert into categories
             (updatedAt, user_id, name, income, outgo)
-            values(NOW(), 0, "${params.name}", ${params.income}, ${params.outgo});`
+            values(NOW(), 0, '${params.name}', ${params.income}, ${params.outgo});`
         );
     }
 

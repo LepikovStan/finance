@@ -5,7 +5,10 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
     `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatedAt` timestamp NOT NULL
+    `updatedAt` timestamp NOT NULL,
+    `s` varchar(255) NOT NULL,
+    `p` text NOT NULL,
+    `l` varchar(255) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 insert into users (id, createdAt, updatedAt) values (0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 CREATE TABLE IF NOT EXISTS `payments` (

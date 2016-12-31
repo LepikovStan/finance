@@ -14,6 +14,7 @@ const contentDisposition = require('content-disposition')
 const path = require('path');
 const mysql = require('mysql');
 const config = require('./config');
+const crypto = require('crypto');
 
 let env = process.argv[2]
 let dbConf = env === '--work' ? config.db.work : config.db.home
@@ -56,8 +57,8 @@ app.services = services;
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(session({
-     secret: 'aeae',
-     cookie: { maxAge: 60000 },
+     secret: crypto.randomBytes(24).toString('base64'),
+     cookie: { maxAge: 120000 },
      resave: true,
      saveUninitialized: true
 }))
@@ -72,7 +73,9 @@ let routes = {
     '/categories/list': 'categories',
     '/category/:categoryId': 'category',
     '/payment/:paymentId': 'payment',
-    '/reports/:reportName': 'reports'
+    '/reports/:reportName': 'reports',
+    '/user/login': 'loginUser',
+    'user/reg': 'registerUser'
 };
 
 for (let route in routes) {
@@ -99,6 +102,7 @@ sass({
     file: resolve('./client/sass/main.sass'),
     outFile: resolve('./public/css/main.css')
 });
+
 webpack(config.webpack, (error, stats) => {
     if (error) {
         return console.error(error);
