@@ -4,7 +4,10 @@ const { Tabs, TabList, Tab, TabPanel } = require('@blueprintjs/core')
 module.exports = class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            login: '',
+            pass: ''
+        };
     }
 
     onSubmit(e) {
@@ -34,10 +37,25 @@ module.exports = class extends React.Component {
     }
 
     changeTab() {
-        let self = this;
+        setTimeout((() => {
+            this.setState({error: null})
+        }).bind(this), 0)
+    }
 
-        return () => {
-        }
+    onChangeLogin(e) {
+        let value = e.target.value
+
+        this.setState({
+            login: value
+        })
+    }
+
+    onChangePass(e) {
+        let value = e.target.value
+
+        this.setState({
+            pass: value
+        })
     }
 
     render() {
@@ -49,7 +67,7 @@ module.exports = class extends React.Component {
 
         return (
             <div className="content auth">
-                <Tabs onChange={this.changeTab()}>
+                <Tabs onChange={this.changeTab.bind(this)}>
                     <TabList>
                         <Tab><h2>Вход</h2></Tab>
                         <Tab><h2>Регистрация</h2></Tab>
@@ -58,10 +76,10 @@ module.exports = class extends React.Component {
                         <form onSubmit={ this.onSubmit.bind(this) } action="/user/login" ref={(form) => this.form = form }>
                             {error}
                             <fieldset>
-                                <label>Логин: <input type="text" name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
+                                <label>Логин: <input value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
                             </fieldset>
                             <fieldset>
-                                <label>Пароль: <input type="password" name="pass" ref={(passInput) => this.passInput = passInput} /></label>
+                                <label>Пароль: <input value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} /></label>
                             </fieldset>
                             <button>Войти</button>
                         </form>
@@ -70,10 +88,10 @@ module.exports = class extends React.Component {
                         <form onSubmit={ this.onSubmit.bind(this) } action="/user/reg" ref={(form) => this.form = form }>
                             {error}
                             <fieldset>
-                                <label>Логин: <input type="text" name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
+                                <label>Логин: <input value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
                             </fieldset>
                             <fieldset>
-                                <label>Пароль: <input type="password" name="pass" ref={(passInput) => this.passInput = passInput} /></label>
+                                <label>Пароль: <input value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} /></label>
                             </fieldset>
                             <button>Зарегистрироваться</button>
                         </form>

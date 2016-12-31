@@ -1,9 +1,15 @@
 let Model = require('../lib/model');
 
 class NewModel extends Model {
-    getByLoginAndPass(params) {
+    add(params) {
         return this.query(
-            `select id, p as pass, l as login from users where p='${params.pass}' and l='${params.login}'`
+            `insert into users (updatedAt, s, p, l, sid) values ('${params.updatedAt}', '${params.salt}', '${params.pass}', '${params.login}', '${params.sid}')`
+        );
+    }
+
+    getByLogin(login) {
+        return this.query(
+            `select id, p as pass, l as login, s as salt, sid from users where l='${login}'`
         );
     }
 };

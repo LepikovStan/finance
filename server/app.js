@@ -75,7 +75,7 @@ let routes = {
     '/payment/:paymentId': 'payment',
     '/reports/:reportName': 'reports',
     '/user/login': 'loginUser',
-    'user/reg': 'registerUser'
+    '/user/reg': 'registerUser'
 };
 
 for (let route in routes) {
