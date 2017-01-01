@@ -11,16 +11,41 @@ module.exports = class extends React.Component {
         }
     }
 
+    componentWillMount() {
+        let user = store.getState().user;
+
+        if (user.status === 'guest') {
+            this.checkAuth()
+        }
+
+        store.subscribe(() => {
+            let user = store.getState().user;
+
+            if (user.status !== 'guest' && !this.state.auth) {
+                this.setState({
+                    auth: true
+                });
+            }
+        })
+    }
+
     checkAuth() {
-        $.get('/categories/list')
-            .then(({status, result}) => {
-                if (status === 'ok'){
-                    store.dispatch({
-                        type: 'setAuth',
-                        result
-                    })
-                }
-            });
+        $.ajax({
+            url: 'user/login',
+            method: 'GET'
+        })
+        .then(({status, result: user}) => {
+            if (status === 'ok') {
+                store.dispatch({
+                    type: 'authUser',
+                    user
+                })
+            } else {
+                console.warn('status not ok', result)
+            }
+        })
+        .catch((res) => {
+        });
     }
 
     render() {

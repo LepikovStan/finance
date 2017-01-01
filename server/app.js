@@ -62,7 +62,7 @@ app.use(session({
      resave: true,
      saveUninitialized: true
 }))
-app.use(middlewares.user(app));
+// app.use(middlewares.user(app));
 app.use(middlewares.logger);
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))

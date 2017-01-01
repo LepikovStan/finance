@@ -1,4 +1,7 @@
 module.exports = {
+    user: {
+        status: 'guest'
+    },
     auth: false,
     mainmenu: {
         active: location.pathname || ''

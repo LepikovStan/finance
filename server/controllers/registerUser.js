@@ -7,13 +7,13 @@ module.exports = class extends Controller {
     post(req, res) {
         let {login, pass} = req.body,
             session = req.session,
-            salt = '1';
+            salt = crypto.randomBytes(24).toString('base64');
 
         let passHash = crypto.createHmac('sha384', salt)
             .update(pass)
             .digest('hex');
 
-        let user = {
+        let userData = {
             updatedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
             login,
             pass: passHash,
@@ -23,12 +23,16 @@ module.exports = class extends Controller {
 
         this
             .getService('User')
-            .add(user)
-            .then(() => {
-                res.json({status: 'ok', result: user})
+            .add(userData)
+            .then((result) => {
+                res.json({status: 'ok', result: {
+                    id: result.insertId,
+                    status: 'free'
+                }})
             })
             .catch((error) => {
                 console.error(error);
+                res.status(400)
                 res.json({status: 'error', error: {message: error.message}})
             })
     }

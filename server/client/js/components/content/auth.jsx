@@ -21,11 +21,14 @@ module.exports = class extends React.Component {
                 pass: this.passInput.value
             }
         })
-        .then(({status, result}) => {
+        .then(({status, result: user}) => {
             if (status === 'ok') {
-                console.log('result', result)
+                store.dispatch({
+                    type: 'authUser',
+                    user
+                })
             } else {
-                console.log('res', result)
+                console.warn('status not ok', result)
             }
         })
         .catch((res) => {
