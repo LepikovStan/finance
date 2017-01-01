@@ -4,13 +4,13 @@ const _ = require('lodash');
 
 module.exports = class extends Controller {
     get(req, res) {
-        let query = _.get(req, 'query');
+        let {query, user} = req
         let {sort} = query
 
         if (sort === 'type') {
             return this
                 .getService('Categories')
-                .getAllByTypes()
+                .getAllByTypes(user.id)
                 .then((categories) => {
                     res.json({
                         status: 'ok',
@@ -24,7 +24,7 @@ module.exports = class extends Controller {
 
         this
             .getService('Categories')
-            .getAll()
+            .getAll(user.id)
             .then((categories) => {
                 res.json({
                     status: 'ok',

@@ -2,13 +2,13 @@ let Model = require('../lib/model');
 
 class NewModel extends Model {
 
-    getCategories() {
+    getCategories(params) {
         return this.query(
             `select SUM(p.amount) as amount, c.name as categoryName
             from payments as p
             join categories as c
             on p.category_id = c.id
-            where p.user_id = 0
+            where p.user_id = ${params.userId}
             group by c.name`
         );
     }

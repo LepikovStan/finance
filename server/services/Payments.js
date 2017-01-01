@@ -32,22 +32,22 @@ class NewService extends Service {
         }
     }
 
-    getAll() {
+    getAll(userId) {
         return this
             .getModel('Payments')
-            .getAll();
+            .getAll({userId});
     }
 
-    getLast() {
+    getLast(userId) {
         return this
             .getModel('Payments')
-            .getLast();
+            .getLast({userId});
     }
 
-    getFuture() {
+    getFuture(userId) {
         return this
             .getModel('Payments')
-            .getFuture();
+            .getFuture({userId});
     }
 
     delete(payment) {
@@ -84,7 +84,7 @@ class NewService extends Service {
         return new Promise((resolve, reject) => {
             Promise.all([
                 this.getModel('Payments').add(payment),
-                this.getModel('Categories').getById(payment.categoryId)
+                this.getModel('Categories').getById(payment)
             ])
             .then(([paymentResult, categories]) => {
                 let category = categories[0];

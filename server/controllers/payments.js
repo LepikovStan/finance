@@ -7,12 +7,13 @@ module.exports = class extends Controller {
         let type = _.get(req, 'params.type') || 'list';
         let query = _.get(req, 'query');
         let filter = _.get(query, 'filter');
+        let user = _.get(req, 'user');
         let payments;
 
         if (type === 'last') {
             return this
                 .getService('Payments')
-                .getLast()
+                .getLast(user.id)
                 .then((payments) => {
                     if (filter){
                         return _.slice(payments, 0, filter);
@@ -30,7 +31,7 @@ module.exports = class extends Controller {
         if (type === 'future') {
             return this
                 .getService('Payments')
-                .getFuture()
+                .getFuture(user.id)
                 .then((payments) => {
                     if (filter){
                         return _.slice(payments, 0, filter);

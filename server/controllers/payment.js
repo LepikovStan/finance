@@ -14,7 +14,7 @@ module.exports = class extends Controller {
 
         this
             .getService('Payments')
-            .delete({id: paymentId})
+            .delete({id: paymentId, userId: req.user.id})
             .then((result) => {
                 res.json({ status: 'ok' });
             })
@@ -26,6 +26,8 @@ module.exports = class extends Controller {
     post(req, res) {
         let payment = req.body,
             Balance = this.getService('Balance');
+
+        payment.userId = req.user.id
 
         this
             .getService('Payments')
@@ -40,8 +42,9 @@ module.exports = class extends Controller {
     }
 
     put(req, res) {
-        let payment = req.body.payment
-        
+        let payment = req.body.payment;
+        payment.userId = req.user.id;
+
         if (!payment.id) {
             let error = new ReferenceError('Parameter id is mandatory for changing payment');
             res.json({

@@ -1,19 +1,22 @@
 let Service = require('../lib/service');
 
 class NewService extends Service {
-    getAll() {
+    getAll(userId) {
         return this
             .getModel('Categories')
-            .getAll();
+            .getAll({userId});
     }
 
-    getAllByTypes() {
+    getAllByTypes(userId) {
         return new Promise((resolve, reject) => {
             Promise.all([
-                    this.getModel('Categories').getIncome(),
-                    this.getModel('Categories').getOutgo()
+                    this.getModel('Categories').getIncome({userId}),
+                    this.getModel('Categories').getOutgo({userId}),
+                    this.getModel('Categories').getOutOfCategory()
                 ])
-                .then(([incomeCategories, outgoCategories]) => {
+                .then(([incomeCategories, outgoCategories,outOfCategory]) => {
+                    incomeCategories.unshift(outOfCategory[0])
+                    outgoCategories.unshift(outOfCategory[0])
                     resolve({
                         income: incomeCategories,
                         outgo: outgoCategories

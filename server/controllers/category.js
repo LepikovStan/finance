@@ -13,7 +13,7 @@ module.exports = class extends Controller {
 
         this
             .getService('Categories')
-            .delete({id: categoryId})
+            .delete({id: categoryId, userId: req.user.id})
             .then((result) => {
                 res.json({ status: 'ok' });
             })
@@ -30,7 +30,7 @@ module.exports = class extends Controller {
             return res.json({ status: 'error', message: error.message });
         }
 
-        let category = {name: req.body.categoryName, income: true, outgo: true};
+        let category = {name: req.body.categoryName, income: true, outgo: true, userId: req.user.id};
 
         this
             .getService('Categories')
@@ -63,6 +63,7 @@ module.exports = class extends Controller {
             console.error(error)
             return
         }
+        category.userId = req.user.id
 
         this
             .getService('Categories')

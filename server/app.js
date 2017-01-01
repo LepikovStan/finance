@@ -58,11 +58,11 @@ app.services = services;
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(session({
      secret: crypto.randomBytes(24).toString('base64'),
-     cookie: { maxAge: 120000 },
+     cookie: { maxAge: 1200000 },
      resave: true,
      saveUninitialized: true
 }))
-// app.use(middlewares.user(app));
+app.use(middlewares.user(app));
 app.use(middlewares.logger);
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}))
 app.use(bodyParser.json({limit: '10mb'}))

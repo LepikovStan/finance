@@ -1,27 +1,33 @@
 let Model = require('../lib/model');
 
 class NewModel extends Model {
-    getAll() {
+    getAll(params) {
         return this.query(
-            'select * from categories where id != 1;'
+            `select * from categories where id != 1 and user_id=${params.userId};`
         );
     }
 
-    getIncome() {
+    getIncome(params) {
         return this.query(
-            'select * from categories where id != 1 and income = 1;'
+            `select * from categories where id != 1 and income = 1 and user_id=${params.userId};`
         );
     }
 
-    getOutgo() {
+    getOutgo(params) {
         return this.query(
-            'select * from categories where id != 1 and outgo = 1;'
+            `select * from categories where id != 1 and outgo = 1 and user_id=${params.userId};`
         );
     }
 
-    getById(category_id) {
+    getOutOfCategory() {
         return this.query(
-            `select * from categories where id=${category_id}`
+            `select * from categories where id = 1;`
+        );
+    }
+
+    getById(params) {
+        return this.query(
+            `select * from categories where id=${params.category_id} and user_id=${params.userId}`
         );
     }
 
@@ -29,13 +35,13 @@ class NewModel extends Model {
         return this.query(
             `insert into categories
             (updatedAt, user_id, name, income, outgo)
-            values(NOW(), 0, '${params.name}', ${params.income}, ${params.outgo});`
+            values(NOW(), ${params.userId}, '${params.name}', ${params.income}, ${params.outgo});`
         );
     }
 
     delete(params) {
         return this.query(
-            `delete from categories where id=${params.id}`
+            `delete from categories where id=${params.id} and user_id=${params.userId}`
         );
     }
 
@@ -43,7 +49,8 @@ class NewModel extends Model {
         return this.query(
             `update categories
             set name="${params.name}", income=${params.income}, outgo=${params.outgo}
-            where id=${params.id}`
+            where id=${params.id}
+            and user_id=${params.userId}`
         );
     }
 };
