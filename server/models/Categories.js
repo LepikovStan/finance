@@ -26,9 +26,15 @@ class NewModel extends Model {
     }
 
     getById(params) {
-        return this.query(
-            `select * from categories where id=${params.category_id} and user_id=${params.userId}`
-        );
+        if (Number(params.categoryId) === 1) {
+            return this.query(
+                `select * from categories where id=${params.categoryId}`
+            );
+        } else {
+            return this.query(
+                `select * from categories where id=${params.categoryId} and user_id=${params.userId}`
+            );
+        }
     }
 
     add(params) {

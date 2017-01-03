@@ -1,18 +1,23 @@
 .main-menu
-    font-size: 16px
-    justify-content: flex-start
+    margin: 50px 0 0
+    font-size: 12px
+    position: relative
+    text-transform: uppercase
+    z-index: 2
 
     ul
         li
-            float: left
-            padding: 5px 10px
+            position: relative
 
-            &:first-child
-                margin: 0
+            a
+                display: inline-block
+                padding: 10px 10px 10px 50px
+                color: #acaba7
+                text-decoration: none
 
             &.active
-                border: 1px solid #666
+                background: #f8f3f0
 
                 a
-                    text-decoration: none
+                    color: #c3a279 //4c4743
                     cursor: default

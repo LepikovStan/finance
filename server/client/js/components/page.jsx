@@ -1,5 +1,6 @@
 const Header = require('components/header');
 const Footer = require('components/footer');
+const MainMenu = require('components/mainmenu');
 const Auth = require('components/content/auth');
 
 module.exports = class extends React.Component {
@@ -21,11 +22,9 @@ module.exports = class extends React.Component {
         store.subscribe(() => {
             let user = store.getState().user;
 
-            if (user.status !== 'guest' && !this.state.auth) {
-                this.setState({
-                    auth: true
-                });
-            }
+            this.setState({
+                auth: user.status !== 'guest'
+            });
         })
     }
 
@@ -49,12 +48,17 @@ module.exports = class extends React.Component {
     }
 
     render() {
-        if (this.state.auth) {
+        if (true) {
             return (
-                <div className="wrapper">
-                    <Header />
-                    { this.props.children }
-                    <Footer />
+                <div className="wrapper cols">
+                    <div className="l-col col">
+                        <MainMenu />
+                    </div>
+                    <div className="r-col col main-info">
+                        <Header />
+                        { this.props.children }
+                        <Footer />
+                    </div>
                 </div>
             );
         } else {

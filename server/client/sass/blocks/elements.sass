@@ -53,12 +53,13 @@ h3
         margin: 0 0 0 10px
 
 .cols
-    display: flex
-    justify-content: space-between
+    &:after
+        content: ''
+        clear: both
+        display: block
 
-    &.cols3
-        .col
-            width: 30%
+    .l-col
+        float: left
 
-    .col
-        width: 45%
+    .r-col
+        float: right

@@ -10,7 +10,8 @@ const reducers = {
     getPayments: require('./getPayments'),
     deletePayment: require('./deletePayment'),
     changePayment: require('./changePayment'),
-    authUser: require('./authUser')
+    authUser: require('./authUser'),
+    logoutUser: require('./logoutUser')
 }
 
 module.exports = (state = initState, action) => {

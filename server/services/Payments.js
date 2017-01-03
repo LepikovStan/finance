@@ -88,6 +88,7 @@ class NewService extends Service {
             ])
             .then(([paymentResult, categories]) => {
                 let category = categories[0];
+                console.log('category', category)
 
                 payment.id = paymentResult.insertId;
                 payment.categoryName = category.name;

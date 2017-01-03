@@ -15,11 +15,11 @@ class NewService extends Service {
         return result;
     }
 
-    getCategories(payment) {
+    getCategories(userId) {
         return new Promise((resolve, reject) => {
             this
                 .getModel('Reports')
-                .getCategories()
+                .getCategories({userId})
                 .then((data) => {
                     resolve(data)
                 })

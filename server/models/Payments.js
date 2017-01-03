@@ -55,7 +55,7 @@ class NewModel extends Model {
         return this.query(
             `insert into payments
             (updatedAt, user_id, category_id, type, amount, date)
-            values(NOW(), 0, ${params.categoryId}, "${params.type}", ${params.amount}, DATE("${params.date}"));`
+            values(NOW(), ${params.userId}, ${params.categoryId}, "${params.type}", ${params.amount}, DATE("${params.date}"));`
         );
     }
 };

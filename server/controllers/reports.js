@@ -7,7 +7,7 @@ module.exports = class extends Controller {
         const Reports = this.getService('Reports')
 
         Reports
-            .getCategories()
+            .getCategories(req.user.id)
             .then(Reports.prepareForReport)
             .then((data) => {
                 console.log('data', data)
