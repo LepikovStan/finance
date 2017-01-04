@@ -11,13 +11,25 @@
 
             a
                 display: inline-block
-                padding: 10px 10px 10px 50px
-                color: #acaba7
+                padding: 15px 10px 15px 50px
+                width: 250px
+                color: #f8f3f0
                 text-decoration: none
 
             &.active
                 background: #f8f3f0
 
+                &:after
+                    content: ''
+                    position: absolute
+                    top: 0
+                    right: 0
+                    bottom: 0
+                    border-right: 5px solid #f8f3f0
+                    border-top: 5px solid transparent
+                    border-bottom: 5px solid transparent
+
                 a
-                    color: #c3a279 //4c4743
+                    color: #c3a279
                     cursor: default
+                    box-shadow: inset 0 0 3px #4c4743

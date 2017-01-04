@@ -26,8 +26,10 @@ module.exports = class extends React.Component {
         return (
             <div className="account-menu">
                 <ul>
-                    <li><span onClick={this.logout.bind(this)}>Выход</span></li>
-                    <li><Link to="/settings">Настройки</Link></li>
+                    <li onClick={this.logout.bind(this)}>
+                        <span className="pt-icon-standard pt-icon-log-out"></span>
+                    </li>
+                    <li><Link to="/settings"><span className="pt-icon-standard pt-icon-settings"></span></Link></li>
                 </ul>
             </div>
         );

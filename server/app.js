@@ -15,6 +15,7 @@ const path = require('path');
 const mysql = require('mysql');
 const config = require('./config');
 const crypto = require('crypto');
+const {exec} = require('child_process')
 
 let env = process.argv[2]
 let dbConf = env === '--work' ? config.db.work : config.db.home
@@ -32,7 +33,9 @@ app.paths = {
     sass: resolve('./lib/sass'),
     watcher: resolve('./lib/watcher'),
     mainTemplate: resolve('./public/index.html'),
-    static: resolve('./public')
+    static: resolve('./public'),
+    blueprintcss: resolve('./node_modules/@blueprintjs/core/dist/blueprint.css'),
+    blueprintResources: resolve('./node_modules/@blueprintjs/core/resources')
 }
 
 let middlewares = require(app.paths.middlewares);
@@ -54,6 +57,14 @@ let serveOptions = {
 // app.set('view engine', 'html');
 app.models = models;
 app.services = services;
+
+exec(`cp -r ${app.paths.blueprintResources} ${app.paths.static}`, (err) => {
+    if (err) {
+        console.log(err)
+    }
+})
+fs.createReadStream(app.paths.blueprintcss)
+    .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint.css`))
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(session({
