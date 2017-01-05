@@ -79,24 +79,36 @@ module.exports = class extends React.Component {
                         <form onSubmit={ this.onSubmit.bind(this) } action="/user/login" ref={(form) => this.form = form }>
                             {error}
                             <fieldset>
-                                <label>Логин: <input autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
+                                <label className="pt-label">
+                                    Логин:
+                                    <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                </label>
                             </fieldset>
                             <fieldset>
-                                <label>Пароль: <input value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} /></label>
+                                <label className="pt-label">
+                                    Пароль:
+                                    <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                </label>
                             </fieldset>
-                            <button>Войти</button>
+                            <button className="pt-button">Войти</button>
                         </form>
                     </TabPanel>
                     <TabPanel>
                         <form onSubmit={ this.onSubmit.bind(this) } action="/user/reg" ref={(form) => this.form = form }>
                             {error}
                             <fieldset>
-                                <label>Логин: <input autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} /></label>
+                                <label className="pt-label">
+                                    Логин:
+                                    <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                </label>
                             </fieldset>
                             <fieldset>
-                                <label>Пароль: <input value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} /></label>
+                                <label className="pt-label">
+                                    Пароль:
+                                    <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                </label>
                             </fieldset>
-                            <button>Зарегистрироваться</button>
+                            <button className="pt-button">Зарегистрироваться</button>
                         </form>
                     </TabPanel>
                 </Tabs>

@@ -37,9 +37,18 @@ module.exports = class extends React.Component {
 
         return (
             <div className="content">
-                <h2>Категории</h2>
-                <AddCategoryForm />
-                <Categories categories={categories} />
+                <h2>
+                    <span className="pt-icon-standard pt-icon-folder-close"></span>
+                    Категории
+                </h2>
+                <div className="cols">
+                    <div className="col l-col island">
+                        <Categories categories={categories} />
+                    </div>
+                    <div className="col r-col island">
+                        <AddCategoryForm />
+                    </div>
+                </div>
             </div>
         );
     }

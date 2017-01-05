@@ -1,3 +1,5 @@
+const {Checkbox} = require('@blueprintjs/core')
+
 module.exports = class extends React.Component {
 
     onSubmit(e) {
@@ -25,11 +27,21 @@ module.exports = class extends React.Component {
         }
     }
 
+    changeCategoryType() {}
+
     render() {
         return (
             <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
-                <input type="text" placeholder="Название категории" ref={ (input) => this.categoryName = input } />
-                <button>Добавить</button>
+                <input className="pt-input" type="text" placeholder="Название категории" ref={ (input) => this.categoryName = input } />
+                <fieldset>
+                    <Checkbox checked="checked" onChange={this.changeCategoryType.bind(this, 'income')}>
+                        В доходе
+                    </Checkbox>
+                    <Checkbox onChange={this.changeCategoryType.bind(this, 'outgo')}>
+                        В расходе
+                    </Checkbox>
+                </fieldset>
+                <button className="pt-button">Добавить</button>
             </form>
         );
     }

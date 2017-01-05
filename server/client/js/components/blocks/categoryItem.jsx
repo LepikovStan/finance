@@ -138,8 +138,12 @@ module.exports = class extends React.Component {
             );
             actions =
                 <div className="actions">
-                    <button onClick={this.editCategory.bind(this, category.id)}>редактировать</button>
-                    <button onClick={this.deleteCategory.bind(this, category.id)}>удалить</button>
+                    <button className="pt-button" onClick={this.editCategory.bind(this, category.id)}>
+                        <span className="pt-icon-standard pt-icon-edit"></span>
+                    </button>
+                    <button className="pt-button" onClick={this.deleteCategory.bind(this, category.id)}>
+                        <span className="pt-icon-standard pt-icon-trash"></span>
+                    </button>
                 </div>
         }
 

@@ -48,7 +48,7 @@ module.exports = class extends React.Component {
     }
 
     render() {
-        if (true) {
+        if (this.state.auth) {
             return (
                 <div className="wrapper cols">
                     <div className="l-col col">
