@@ -21,19 +21,30 @@ module.exports = class extends React.Component {
 
     componentWillMount() {
         store.subscribe(() => {
+            let state = store.getState(),
+                categoryToEdit = state.categoryToEdit || {};
+
+            console.log('state.categoryToEdit', state.categoryToEdit)
             this.setState({
-                categories: store.getState().categories
+                categories: state.categories,
+                categoryToEdit: categoryToEdit
             });
         });
         this.getCategories();
     }
 
     render() {
-        let {categories} = this.state;
+        let {categories, categoryToEdit} = this.state;
 
         if (!categories) {
             return (<div></div>);
         }
+
+        if (!categoryToEdit) {
+            categoryToEdit = {}
+        }
+
+        console.log('categoryToEdit', categoryToEdit, Boolean(categoryToEdit.income), Boolean(categoryToEdit.outgo))
 
         return (
             <div className="content">
@@ -45,8 +56,17 @@ module.exports = class extends React.Component {
                     <div className="col l-col island">
                         <Categories categories={categories} />
                     </div>
-                    <div className="col l-col island">
-                        <AddCategoryForm />
+                    <div className="col l-col">
+                        <div className="island">
+                            <AddCategoryForm />
+                        </div>
+                        <div className="island">
+                            <AddCategoryForm
+                                edit={true}
+                                name={categoryToEdit.name}
+                                income={Boolean(categoryToEdit.income)}
+                                outgo={Boolean(categoryToEdit.outgo)} />
+                        </div>
                     </div>
                 </div>
             </div>

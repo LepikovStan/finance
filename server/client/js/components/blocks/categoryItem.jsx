@@ -1,3 +1,5 @@
+_ = require('lodash')
+
 module.exports = class extends React.Component {
     constructor(props) {
         super(props);
@@ -74,8 +76,13 @@ module.exports = class extends React.Component {
     }
 
     editCategory() {
-        this.setState({
+        /*this.setState({
             editCategoryName: true
+        })*/
+        console.log('edit', this.state)
+        store.dispatch({
+            type: 'editCategory',
+            category: _.clone(this.state.category)
         })
     }
 

@@ -3,6 +3,7 @@ const reducers = {
     navMain: require('./mainmenu'),
     changeCategory: require('./changeCategory'),
     deleteCategory: require('./deleteCategory'),
+    editCategory: require('./editCategory'),
     getCategories: require('./getCategories'),
     getCategoriesByType: require('./getCategoriesByType'),
     addCategory: require('./addCategory'),

@@ -6,10 +6,12 @@ module.exports = class extends React.Component {
         super(props);
 
         this.state = {
-            name: props.name || '',
-            income: props.income || true,
-            outgo: props.outgo || true
+            edit: false,
+            name: '',
+            income: true,
+            outgo: true
         }
+
     }
 
     onSubmit(e) {
@@ -49,25 +51,34 @@ module.exports = class extends React.Component {
         })
     }
 
+    componentWillMount() {
+        console.log('mount', this.state, this.props)
+    }
+
     render() {
+        let state = this.props.edit ? this.props : this.state
+
+        let {edit, name, income, outgo} = state;
+        console.log(state, edit, name, income, outgo);
+
         return (
             <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
                 <h3>
                     <span className="pt-icon-standard pt-icon-add"></span>
-                    Добавить новую категорию
+                    {edit ? 'Редактировать категорию' : 'Добавить новую категорию'}
                 </h3>
                 <input
                     onChange={this.changeCategpryName.bind(this)}
-                    value={this.state.name}
+                    value={name}
                     className="pt-input"
                     type="text"
                     placeholder="Название категории"
                     ref={ (input) => this.categoryName = input } />
                 <fieldset>
-                    <Checkbox checked={this.state.income} onChange={this.changeCategoryType.bind(this, 'income')}>
+                    <Checkbox checked={income} onChange={this.changeCategoryType.bind(this, 'income')}>
                         В доходе
                     </Checkbox>
-                    <Checkbox checked={this.state.outgo} onChange={this.changeCategoryType.bind(this, 'outgo')}>
+                    <Checkbox checked={outgo} onChange={this.changeCategoryType.bind(this, 'outgo')}>
                         В расходе
                     </Checkbox>
                 </fieldset>
