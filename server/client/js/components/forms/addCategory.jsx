@@ -2,6 +2,16 @@ const {Checkbox} = require('@blueprintjs/core')
 
 module.exports = class extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            name: props.name || '',
+            income: props.income || true,
+            outgo: props.outgo || true
+        }
+    }
+
     onSubmit(e) {
         e.preventDefault()
         let categoryName = this.categoryName.value
@@ -11,7 +21,7 @@ module.exports = class extends React.Component {
                 url: '/category/new',
                 method: 'POST',
                 data: {
-                    categoryName
+                    category: this.state
                 }
             })
             .then(({status, result: category}) => {
@@ -27,17 +37,37 @@ module.exports = class extends React.Component {
         }
     }
 
-    changeCategoryType() {}
+    changeCategoryType(type) {
+        let state = {}
+        state[type] = !this.state[type]
+        this.setState(state)
+    }
+
+    changeCategpryName(e) {
+        this.setState({
+            name: e.target.value
+        })
+    }
 
     render() {
         return (
             <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
-                <input className="pt-input" type="text" placeholder="Название категории" ref={ (input) => this.categoryName = input } />
+                <h3>
+                    <span className="pt-icon-standard pt-icon-add"></span>
+                    Добавить новую категорию
+                </h3>
+                <input
+                    onChange={this.changeCategpryName.bind(this)}
+                    value={this.state.name}
+                    className="pt-input"
+                    type="text"
+                    placeholder="Название категории"
+                    ref={ (input) => this.categoryName = input } />
                 <fieldset>
-                    <Checkbox checked="checked" onChange={this.changeCategoryType.bind(this, 'income')}>
+                    <Checkbox checked={this.state.income} onChange={this.changeCategoryType.bind(this, 'income')}>
                         В доходе
                     </Checkbox>
-                    <Checkbox onChange={this.changeCategoryType.bind(this, 'outgo')}>
+                    <Checkbox checked={this.state.outgo} onChange={this.changeCategoryType.bind(this, 'outgo')}>
                         В расходе
                     </Checkbox>
                 </fieldset>

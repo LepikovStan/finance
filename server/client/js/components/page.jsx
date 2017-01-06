@@ -52,6 +52,7 @@ module.exports = class extends React.Component {
             return (
                 <div className="wrapper cols">
                     <div className="l-col col">
+                        <div className="logo"></div>
                         <MainMenu />
                     </div>
                     <div className="r-col col main-info">

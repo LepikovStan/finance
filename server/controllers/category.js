@@ -30,11 +30,25 @@ module.exports = class extends Controller {
             return res.json({ status: 'error', message: error.message });
         }
 
-        let category = {name: req.body.categoryName, income: true, outgo: true, userId: req.user.id};
+        let category = req.body.category;
+
+        if (category.income === 'false') {
+            category.income = false
+        } else {
+            category.income = true
+        }
+
+        if (category.outgo === 'false') {
+            category.outgo = false
+        } else {
+            category.outgo = true
+        }
+
+        let categoryToInsert = {name: category.name, income: category.income, outgo: category.outgo, userId: req.user.id};
 
         this
             .getService('Categories')
-            .add(category)
+            .add(categoryToInsert)
             .then((category) => {
                 res.json({ status: 'ok', result: category });
             })

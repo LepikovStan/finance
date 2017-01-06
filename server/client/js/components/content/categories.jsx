@@ -45,7 +45,7 @@ module.exports = class extends React.Component {
                     <div className="col l-col island">
                         <Categories categories={categories} />
                     </div>
-                    <div className="col r-col island">
+                    <div className="col l-col island">
                         <AddCategoryForm />
                     </div>
                 </div>

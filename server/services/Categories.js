@@ -32,6 +32,7 @@ class NewService extends Service {
                 .add(category)
                 .then((result) => {
                     category.id = result.insertId;
+                    delete category.userId;
                     resolve(category);
                 })
         });
