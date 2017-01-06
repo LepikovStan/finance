@@ -22,29 +22,42 @@ module.exports = class extends React.Component {
     componentWillMount() {
         store.subscribe(() => {
             let state = store.getState(),
-                categoryToEdit = state.categoryToEdit || {};
+                categoryToEdit = state.categoryToEdit || false;
 
-            console.log('state.categoryToEdit', state.categoryToEdit)
             this.setState({
-                categories: state.categories,
-                categoryToEdit: categoryToEdit
+                categoryToEdit: false
             });
+
+            setTimeout((() => {
+                console.log('state', state.categories)
+                this.setState({
+                    categories: state.categories,
+                    categoryToEdit
+                });
+            }).bind(this), 0)
+
         });
         this.getCategories();
     }
 
     render() {
-        let {categories, categoryToEdit} = this.state;
+        let {categories, categoryToEdit} = this.state,
+            editCategpryForm;
 
         if (!categories) {
             return (<div></div>);
         }
 
-        if (!categoryToEdit) {
-            categoryToEdit = {}
+        if (categoryToEdit) {
+            editCategpryForm = <div className="island">
+                    <AddCategoryForm
+                        edit={true}
+                        id={categoryToEdit.id}
+                        name={categoryToEdit.name}
+                        income={Boolean(categoryToEdit.income)}
+                        outgo={Boolean(categoryToEdit.outgo)} />
+                </div>
         }
-
-        console.log('categoryToEdit', categoryToEdit, Boolean(categoryToEdit.income), Boolean(categoryToEdit.outgo))
 
         return (
             <div className="content">
@@ -60,13 +73,7 @@ module.exports = class extends React.Component {
                         <div className="island">
                             <AddCategoryForm />
                         </div>
-                        <div className="island">
-                            <AddCategoryForm
-                                edit={true}
-                                name={categoryToEdit.name}
-                                income={Boolean(categoryToEdit.income)}
-                                outgo={Boolean(categoryToEdit.outgo)} />
-                        </div>
+                        {editCategpryForm}
                     </div>
                 </div>
             </div>

@@ -18,7 +18,7 @@ module.exports = class extends React.Component {
     }
 
     changeCategory(category) {
-        $.ajax({
+        /*$.ajax({
             url: `/category/${category.id}`,
             method: 'PUT',
             data: {
@@ -40,7 +40,7 @@ module.exports = class extends React.Component {
         })
         .catch((error) => {
             console.error('error', error)
-        });
+        });*/
     }
 
     deleteCategory(categoryId) {
@@ -70,16 +70,16 @@ module.exports = class extends React.Component {
     }
 
     cancelCategoryChange() {
-        this.setState({
+        /*this.setState({
             editCategoryName: false
-        })
+        })*/
     }
 
     editCategory() {
         /*this.setState({
             editCategoryName: true
         })*/
-        console.log('edit', this.state)
+
         store.dispatch({
             type: 'editCategory',
             category: _.clone(this.state.category)

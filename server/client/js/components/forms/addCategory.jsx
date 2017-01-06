@@ -4,39 +4,62 @@ module.exports = class extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
+        this.initState = {
             edit: false,
             name: '',
             income: true,
             outgo: true
         }
 
+        if (props.edit) {
+            this.state = props
+        } else {
+            this.state = this.initState
+        }
     }
 
     onSubmit(e) {
         e.preventDefault()
-        let categoryName = this.categoryName.value
+        let categoryName = this.categoryName.value,
+            type = 'addCategory',
+            params = {
+                url: '/category/new',
+                method: 'POST'
+            }
+
+        if (this.props.edit) {
+            type = 'changeCategory'
+            params = {
+                url: `/category/${this.state.id}`,
+                method: 'PUT'
+            }
+        }
 
         if (categoryName) {
             $.ajax({
-                url: '/category/new',
-                method: 'POST',
+                url: params.url,
+                method: params.method,
                 data: {
                     category: this.state
                 }
             })
             .then(({status, result: category}) => {
                 store.dispatch({
-                    type: 'addCategory',
+                    type,
                     category
                 })
-                this.form.reset()
+                if (!this.props.edit) {
+                    this.setState(this.initState)
+                }
             })
             .catch((error) => {
                 console.log('error', error)
             })
         }
+    }
+
+    cancel() {
+        console.log('cancel')
     }
 
     changeCategoryType(type) {
@@ -51,15 +74,18 @@ module.exports = class extends React.Component {
         })
     }
 
-    componentWillMount() {
-        console.log('mount', this.state, this.props)
-    }
-
     render() {
-        let state = this.props.edit ? this.props : this.state
+        let {edit, name, income, outgo} = this.state,
+            buttons = <div className="buttons">
+                <button className="pt-button">Добавить</button>
+            </div>;
 
-        let {edit, name, income, outgo} = state;
-        console.log(state, edit, name, income, outgo);
+        if (edit) {
+            buttons = <div className="buttons">
+                <button className="pt-button" onClick={this.onSubmit.bind(this)}>Сохранить</button>
+                <button className="pt-button" onClick={this.cancel.bind(this)}>Отмена</button>
+            </div>
+        }
 
         return (
             <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
@@ -82,7 +108,7 @@ module.exports = class extends React.Component {
                         В расходе
                     </Checkbox>
                 </fieldset>
-                <button className="pt-button">Добавить</button>
+                {buttons}
             </form>
         );
     }
