@@ -1,10 +1,11 @@
 const moment = require('moment');
 const CategoriesField = require('components/blocks/categoriesField')
+const { DatePicker } = require('@blueprintjs/datetime')
 
 module.exports = class extends React.Component {
     constructor(props) {
         super(props);
-        let today = moment().format("YYYY-MM-DD");
+        let today = new Date()
 
         this.state = {
             date: today,
@@ -19,9 +20,9 @@ module.exports = class extends React.Component {
         };
     }
 
-    changeDate() {
+    changeDate(date) {
         this.setState({
-            date: this.dateField.value
+            date
         })
     }
 
@@ -46,7 +47,7 @@ module.exports = class extends React.Component {
         e.preventDefault()
 
         this.params = Object.assign({}, this.params, {
-            date: this.state.date,
+            date: moment(this.state.date).format("YYYY-MM-DD"),
             amount: Number(this.state.paymentValue)
         })
 
@@ -69,24 +70,36 @@ module.exports = class extends React.Component {
         })
     }
 
+    handleDayClick() {}
+
     render() {
+        let {edit} = this.state,
+            buttons = <div className="buttons">
+                <button className="pt-button">Добавить</button>
+            </div>
+
         return (
-            <form className="add-payment" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
+            <form className="add-form add-payment" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
+                <h3>
+                    <span className="pt-icon-standard pt-icon-add"></span>
+                    {edit ? 'Редактировать платёж' : 'Добавить новый платёж'}
+                </h3>
                 <fieldset>
-                    <input type="date" value={this.state.date} defaultValue={moment().format("YYYY-MM-DD")} onChange={this.changeDate.bind(this)} ref={ (input) => this.dateField = input } />
+                    <DatePicker
+                        value={this.state.date}
+                        defaultValue={new Date()}
+                        onChange={this.changeDate.bind(this)} />
                 </fieldset>
                 <CategoriesField changeCategoryParams={this.changeCategoryParams.bind(this)} />
                 <fieldset>
                     <input
                         type="number"
+                        className="pt-input"
                         value={this.state.paymentValue}
                         onChange={this.changePaymentValue.bind(this)}
                         ref={ (input) => this.paymentValueField = input } />
                 </fieldset>
-                <fieldset></fieldset>
-                <fieldset></fieldset>
-                <fieldset></fieldset>
-                <button>Добавить</button>
+                {buttons}
             </form>
         );
     }

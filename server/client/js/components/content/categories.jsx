@@ -26,37 +26,40 @@ module.exports = class extends React.Component {
 
             this.setState({
                 categoryToEdit: false
-            });
-
-            setTimeout((() => {
-                console.log('state', state.categories)
+            })
+            setTimeout(() => {
                 this.setState({
                     categories: state.categories,
                     categoryToEdit
                 });
-            }).bind(this), 0)
+            }, 0)
 
         });
         this.getCategories();
     }
 
+    cancel() {
+        this.setState({
+            categoryToEdit: false
+        })
+    }
+
     render() {
         let {categories, categoryToEdit} = this.state,
-            editCategpryForm;
+            editCategoryForm;
 
         if (!categories) {
             return (<div></div>);
         }
 
         if (categoryToEdit) {
-            editCategpryForm = <div className="island">
-                    <AddCategoryForm
-                        edit={true}
-                        id={categoryToEdit.id}
-                        name={categoryToEdit.name}
-                        income={Boolean(categoryToEdit.income)}
-                        outgo={Boolean(categoryToEdit.outgo)} />
-                </div>
+            editCategoryForm = <AddCategoryForm
+                edit={true}
+                id={categoryToEdit.id}
+                name={categoryToEdit.name}
+                income={Boolean(categoryToEdit.income)}
+                outgo={Boolean(categoryToEdit.outgo)}
+                cancel={this.cancel.bind(this)} />
         }
 
         return (
@@ -70,10 +73,10 @@ module.exports = class extends React.Component {
                         <Categories categories={categories} />
                     </div>
                     <div className="col l-col">
-                        <div className="island">
+                        <div className="island oHidden">
                             <AddCategoryForm />
+                            {editCategoryForm}
                         </div>
-                        {editCategpryForm}
                     </div>
                 </div>
             </div>

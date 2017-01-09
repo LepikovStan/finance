@@ -21,7 +21,7 @@ class NewModel extends Model {
 
     getOutOfCategory() {
         return this.query(
-            `select * from categories where id = 1;`
+            `select * from categories where id = 0;`
         );
     }
 

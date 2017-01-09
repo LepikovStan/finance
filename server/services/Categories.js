@@ -7,6 +7,18 @@ class NewService extends Service {
             .getAll({userId});
     }
 
+    prepareCategoryTypes(categories) {
+        categories.income.map((category) => {
+            category.income = !!category.income
+            category.outgo = !!category.outgo
+        })
+        categories.outgo.map((category) => {
+            category.income = !!category.income
+            category.outgo = !!category.outgo
+        })
+        return categories
+    }
+
     getAllByTypes(userId) {
         return new Promise((resolve, reject) => {
             Promise.all([
@@ -50,7 +62,6 @@ class NewService extends Service {
                 .getModel('Categories')
                 .change(category)
                 .then((result) => {
-                    category.id = result.insertId;
                     resolve(category);
                 })
         });

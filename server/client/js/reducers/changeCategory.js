@@ -2,7 +2,7 @@ module.exports = (state, action) => {
     let categories = _.clone(state.categories);
     let changedCategory = action.category;
     categories.map((category, index) => {
-        if (category.id === changedCategory.id) {
+        if (Number(category.id) === Number(changedCategory.id)) {
             categories[index] = changedCategory;
         }
     })

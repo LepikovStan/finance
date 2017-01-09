@@ -34,7 +34,8 @@ app.paths = {
     watcher: resolve('./lib/watcher'),
     mainTemplate: resolve('./public/index.html'),
     static: resolve('./public'),
-    blueprintcss: resolve('./node_modules/@blueprintjs/core/dist/blueprint.css'),
+    blueprintCss: resolve('./node_modules/@blueprintjs/core/dist/blueprint.css'),
+    blueprintDatetimeCss: resolve('./node_modules/@blueprintjs/datetime/dist/blueprint-datetime.css'),
     blueprintResources: resolve('./node_modules/@blueprintjs/core/resources')
 }
 
@@ -63,8 +64,15 @@ exec(`cp -r ${app.paths.blueprintResources} ${app.paths.static}`, (err) => {
         console.log(err)
     }
 })
-fs.createReadStream(app.paths.blueprintcss)
+exec(`mkdir -p ${app.paths.static}/css/`, (err) => {
+    if (err) {
+        console.log(err)
+    }
+})
+fs.createReadStream(app.paths.blueprintCss)
     .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint.css`))
+fs.createReadStream(app.paths.blueprintDatetimeCss)
+    .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint-datetime.css`))
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(session({

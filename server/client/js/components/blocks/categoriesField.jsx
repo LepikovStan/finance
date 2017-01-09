@@ -1,4 +1,5 @@
 const CategoryItem = require('components/blocks/categoryItem')
+const {RadioGroup, Radio} = require('@blueprintjs/core')
 const NoItems = require('components/elements/noItems')
 
 module.exports = class extends React.Component {
@@ -30,11 +31,13 @@ module.exports = class extends React.Component {
             let categories = store.getState().categoriesByType,
                 category = categories[this.state.currentType][0];
 
-            this.setState({
-                categories: categories,
-                categoryId: this.props.categoryId || Number(category.id),
-                categoryName: this.props.categoryName || category.name
-            })
+            if (category) {
+                this.setState({
+                    categories: categories,
+                    categoryId: this.props.categoryId || Number(category.id),
+                    categoryName: this.props.categoryName || category.name
+                })
+            }
         })
 
         this.getCategories()
@@ -75,16 +78,11 @@ module.exports = class extends React.Component {
         })
 
         let paymentTypeElems = this.state.types.map((type) => {
-            let checked = this.state.currentType === type
-
-            return <label key={type}>
-                {type}
-                <input
-                    type="radio"
-                    value={type}
-                    name="paymentType"
-                    checked={checked} />
-            </label>
+            return <Radio
+                key={type}
+                className="pt-inline"
+                label={type}
+                value={type} />
         });
         let categories = this.state.categories[this.state.currentType];
         let categoriesOptions = categories.map((category) => {
@@ -94,12 +92,17 @@ module.exports = class extends React.Component {
         return (
             <div>
                 <fieldset onChange={this.changePaymentType.bind(this)} ref = { (radio) => { this.typeField = radio } }>
-                    {paymentTypeElems}
+                    <RadioGroup
+                        selectedValue={this.state.currentType}>
+                            {paymentTypeElems}
+                    </RadioGroup>
                 </fieldset>
                 <fieldset>
-                    <select value={this.state.categoryId} onChange={this.changeCategoryId.bind(this)} ref={ (select) => this.categoryIdField = select }>
-                        {categoriesOptions}
-                    </select>
+                    <div className="pt-select">
+                        <select value={this.state.categoryId} onChange={this.changeCategoryId.bind(this)} ref={ (select) => this.categoryIdField = select }>
+                            {categoriesOptions}
+                        </select>
+                    </div>
                 </fieldset>
             </div>
         );

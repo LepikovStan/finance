@@ -67,6 +67,8 @@ module.exports = class extends Controller {
         }
 
         let category = req.body.category
+        category.income = category.income === 'true' ? true : false
+        category.outgo = category.outgo === 'true' ? true : false
 
         if (!category.id) {
             let error = new ReferenceError('Parameter `id` is mandatory for changing category');
@@ -83,7 +85,7 @@ module.exports = class extends Controller {
             .getService('Categories')
             .change(category)
             .then((result) => {
-                res.json({ status: 'ok', result: req.body.category });
+                res.json({ status: 'ok', result: category });
             })
             .catch((error) => {
                 console.error(error);

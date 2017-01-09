@@ -4,18 +4,16 @@ module.exports = class extends React.Component {
 
     constructor(props) {
         super(props);
-        this.initState = {
-            edit: false,
-            name: '',
-            income: true,
-            outgo: true
-        }
 
-        if (props.edit) {
-            this.state = props
-        } else {
-            this.state = this.initState
+        if (!props.edit) {
+            props = {
+                edit: false,
+                name: '',
+                income: true,
+                outgo: true
+            }
         }
+        this.state = props
     }
 
     onSubmit(e) {
@@ -30,7 +28,7 @@ module.exports = class extends React.Component {
         if (this.props.edit) {
             type = 'changeCategory'
             params = {
-                url: `/category/${this.state.id}`,
+                url: `/category/${this.props.id}`,
                 method: 'PUT'
             }
         }
@@ -51,15 +49,12 @@ module.exports = class extends React.Component {
                 if (!this.props.edit) {
                     this.setState(this.initState)
                 }
+                this.cancel()
             })
             .catch((error) => {
                 console.log('error', error)
             })
         }
-    }
-
-    cancel() {
-        console.log('cancel')
     }
 
     changeCategoryType(type) {
@@ -74,8 +69,18 @@ module.exports = class extends React.Component {
         })
     }
 
+    cancel(e) {
+        e && e.preventDefault()
+        store.dispatch({
+            type: 'editCategory',
+            category: false
+        })
+        this.props.cancel()
+    }
+
     render() {
         let {edit, name, income, outgo} = this.state,
+            cN = edit ? 'add-form add-category edit' : 'add-form add-category',
             buttons = <div className="buttons">
                 <button className="pt-button">Добавить</button>
             </div>;
@@ -88,7 +93,7 @@ module.exports = class extends React.Component {
         }
 
         return (
-            <form className="add-category" onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
+            <form className={cN} onSubmit={ this.onSubmit.bind(this) } ref={(form) => this.form = form }>
                 <h3>
                     <span className="pt-icon-standard pt-icon-add"></span>
                     {edit ? 'Редактировать категорию' : 'Добавить новую категорию'}

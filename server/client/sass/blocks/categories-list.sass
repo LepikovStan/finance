@@ -1,5 +1,26 @@
-.categories-list
+.add-category
+    &.edit
+        position: absolute
+        top: 0
+        left: 0
+        padding: 15px
+        background: #fff
 
+        .buttons
+            button + button
+                margin: 0 0 0 15px
+
+.add-category
+    .pt-control
+        display: inline-block
+
+        & + .pt-control
+            margin: 0 0 0 30px
+
+    & + .categories-list
+        margin: 40px 0 0
+
+.categories-list
     .changeCategoryNameForm
         display: inline-block
         vertical-align: middle
