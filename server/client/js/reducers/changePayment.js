@@ -13,17 +13,9 @@ const insert = (arr, item, dir) => {
 module.exports = (state, action) => {
     let {payment} = action,
         paymentId = payment.id,
-        paymentTime = new Date(payment.date).getTime(),
-        isFuturePayment = paymentTime > Date.now(),
-        expiredPayment,
-        expiredPaymentIsLast = true,
-        payments;
-
-    expiredPayment = _.find(state.payments.last, {id: paymentId})
-    if (!expiredPayment) {
-        expiredPaymentIsLast = false;
-        expiredPayment = _.find(state.payments.future, {id: paymentId})
-    }
+        payments = state.payments,
+        expiredPayment = _.find(payments, {id: paymentId}),
+        index = _.indexOf(payments, expiredPayment);
 
     if (payment.type === 'outgo') {
         payment.amount = -Math.abs(payment.amount)
@@ -31,41 +23,15 @@ module.exports = (state, action) => {
         payment.amount = Math.abs(payment.amount)
     }
 
-    if (expiredPaymentIsLast) {
-        payments = state.payments.last;
-    } else {
-        payments = state.payments.future;
-    }
-    let expiredPaymentIndex = _.indexOf(payments, expiredPayment)
-    payments.splice(expiredPaymentIndex, 1)
-
-    if (isFuturePayment) {
-        insert(state.payments.future, payment, 'asc')
-    } else {
-        insert(state.payments.last, payment, 'desc')
-    }
-
-    return state;
-
-    if (paymentDate <= Date.now()) {
-        state.payments.last.push(payment);
-        state.payments.last.sort((a, b) => {
-            if (new Date(b.date).getTime() > new Date(a.date).getTime()) {
-                return 1;
-            } else {
-                return -1;
-            }
-        })
-    } else {
-        state.payments.future.push(payment);
-        state.payments.future.sort((a, b) => {
-            if (new Date(b.date).getTime() > new Date(a.date).getTime()) {
-                return -1;
-            } else {
-                return 1;
-            }
-        })
-    }
+    payments[index] = payment
+    console.log('state.payments new', state.payments, payment)
+    state.payments.sort((a, b) => {
+        if (new Date(b.date).getTime() > new Date(a.date).getTime()) {
+            return 1;
+        } else {
+            return -1;
+        }
+    })
 
     return state;
 }

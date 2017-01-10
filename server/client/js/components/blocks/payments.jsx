@@ -28,7 +28,6 @@ module.exports = class extends React.Component {
                 if (status === 'ok')  {
                     store.dispatch({
                         type: 'getPayments',
-                        paymentsType: type,
                         payments
                     })
                 }
@@ -38,7 +37,7 @@ module.exports = class extends React.Component {
     componentWillMount() {
         store.subscribe(() => {
             this.setState({
-                payments: store.getState().payments[this.state.type]
+                payments: store.getState().payments
             })
         })
         this.getPayments();

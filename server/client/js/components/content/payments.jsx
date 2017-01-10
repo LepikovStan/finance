@@ -8,7 +8,39 @@ module.exports = class extends React.Component {
         this.state = {};
     }
 
+    componentWillMount() {
+        store.subscribe(() => {
+            let state = store.getState(),
+                paymentToEdit = state.paymentToEdit || false;
+
+            this.setState({
+                paymentToEdit
+            });
+
+        })
+    }
+
+    cancelEdit() {
+        this.setState({
+            paymentToEdit: false
+        })
+    }
+
     render() {
+        let {paymentToEdit} = this.state,
+            editPaymentForm;
+
+        if (paymentToEdit) {
+            editPaymentForm = <AddOncePaymentForm
+                edit={true}
+                id={paymentToEdit.id}
+                date={new Date(paymentToEdit.date)}
+                paymentType={paymentToEdit.paymentType}
+                categoryId={paymentToEdit.categoryId}
+                cancelEdit={this.cancelEdit.bind(this)}
+                amount={paymentToEdit.amount} />
+        }
+
         return (
             <div className="content b-payments">
                 <h2>
@@ -17,22 +49,12 @@ module.exports = class extends React.Component {
                 </h2>
                 <div className="cols">
                     <div className="col l-col island">
-                        <Tabs>
-                            <TabList>
-                                <Tab><h3>Прошедшие</h3></Tab>
-                                <Tab><h3>Будущие</h3></Tab>
-                            </TabList>
-                            <TabPanel>
-                                <Payments type="last" filter="15" />
-                            </TabPanel>
-                            <TabPanel>
-                                <Payments type="future" filter="15" />
-                            </TabPanel>
-                        </Tabs>
+                        <Payments filter="15" />
                     </div>
                     <div className="col l-col">
                         <div className="island oHidden">
                             <AddOncePaymentForm />
+                            {editPaymentForm}
                         </div>
                     </div>
                 </div>

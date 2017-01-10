@@ -5,6 +5,7 @@ module.exports = class extends Controller {
     delete(req, res) {
         let {categoryId} = req.params;
         categoryId = Number(categoryId);
+        const Payments = this.getService('Payments')
 
         if (isNaN(categoryId)) {
             let error = new TypeError('There is wrong type of categoryId to delete it')
@@ -14,6 +15,7 @@ module.exports = class extends Controller {
         this
             .getService('Categories')
             .delete({id: categoryId, userId: req.user.id})
+            .then(Payments.updateDeletedCategory.bind(Payments, {userId: req.user.id}))
             .then((result) => {
                 res.json({ status: 'ok' });
             })

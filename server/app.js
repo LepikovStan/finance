@@ -22,6 +22,15 @@ let dbConf = env === '--work' ? config.db.work : config.db.home
 const db = mysql.createConnection(dbConf);
 const _ = require('lodash');
 db.connect();
+db.config.queryFormat = (query, values) => {
+    if (!values) return query;
+    return query.replace(/\:(\w+)/g, ((txt, key) => {
+        if (values.hasOwnProperty(key)) {
+            return db.escape(values[key]);
+        }
+        return txt;
+    }).bind(this));
+};
 app.db = db;
 
 const resolve = (url) => {
@@ -59,20 +68,20 @@ let serveOptions = {
 app.models = models;
 app.services = services;
 
-exec(`cp -r ${app.paths.blueprintResources} ${app.paths.static}`, (err) => {
-    if (err) {
-        console.log(err)
-    }
-})
-exec(`mkdir -p ${app.paths.static}/css/`, (err) => {
-    if (err) {
-        console.log(err)
-    }
-})
-fs.createReadStream(app.paths.blueprintCss)
-    .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint.css`))
-fs.createReadStream(app.paths.blueprintDatetimeCss)
-    .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint-datetime.css`))
+// exec(`cp -r ${app.paths.blueprintResources} ${app.paths.static}`, (err) => {
+//     if (err) {
+//         console.log(err)
+//     }
+// })
+// exec(`mkdir -p ${app.paths.static}/css/`, (err) => {
+//     if (err) {
+//         console.log(err)
+//     }
+// })
+// fs.createReadStream(app.paths.blueprintCss)
+//     .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint.css`))
+// fs.createReadStream(app.paths.blueprintDatetimeCss)
+//     .pipe(fs.createWriteStream(`${app.paths.static}/css/blueprint-datetime.css`))
 
 app.use('/public', serveStatic(app.paths.static, serveOptions));
 app.use(session({

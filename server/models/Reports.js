@@ -8,8 +8,9 @@ class NewModel extends Model {
             from payments as p
             join categories as c
             on p.category_id = c.id
-            where p.user_id = ${params.userId}
-            group by c.name`
+            where p.user_id = :userId
+            group by c.name`,
+            params
         );
     }
 };

@@ -2,12 +2,23 @@ let Model = require('../lib/model');
 
 class NewModel extends Model {
 
+    updateDeletedCategory(params) {
+        return this.query(
+            `update payments
+            set category_id=0
+            where user_id=:userId
+            and category_id is null`,
+            params
+        );
+    }
+
     change(params) {
         return this.query(
             `update payments
-            set category_id=${params.categoryId}, type="${params.type}", amount=${params.amount}, date="${params.date}"
-            where id=${params.id}
-            and user_id=${params.userId}`
+            set category_id=:categoryId, type=:type, amount=:amount, date=:date
+            where id=:id
+            and user_id=:userId`,
+            params
         );
     }
 
@@ -17,7 +28,9 @@ class NewModel extends Model {
             from payments as p
             join categories as c
             on p.category_id = c.id
-            where p.user_id=${params.userId}`
+            where p.user_id=19
+            order by p.date desc`,
+            params
         );
     }
 
@@ -28,14 +41,16 @@ class NewModel extends Model {
             join categories as c
             on p.category_id = c.id
             where p.date <= NOW()
-            and p.user_id=${params.userId}
-            order by p.date desc`
+            and p.user_id=:userId
+            order by p.date desc`,
+            params
         );
     }
 
     delete(params) {
         return this.query(
-            `delete from payments where id=${params.id} and user_id=${params.userId}`
+            `delete from payments where id=:id and user_id=:userId`,
+            params
         );
     }
 
@@ -46,8 +61,9 @@ class NewModel extends Model {
             join categories as c
             on p.category_id = c.id
             where p.date > NOW()
-            and p.user_id=${params.userId}
-            order by p.date asc`
+            and p.user_id=:userId
+            order by p.date asc`,
+            params
         );
     }
 
@@ -55,7 +71,8 @@ class NewModel extends Model {
         return this.query(
             `insert into payments
             (updatedAt, user_id, category_id, type, amount, date)
-            values(NOW(), ${params.userId}, ${params.categoryId}, "${params.type}", ${params.amount}, DATE("${params.date}"));`
+            values(NOW(), :userId, :categoryId, :type, :amount, :date);`,
+            params
         );
     }
 };

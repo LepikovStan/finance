@@ -13,7 +13,7 @@ module.exports = class extends React.Component {
         })
     }
 
-    deleteCategory(categoryId) {
+    delete(categoryId) {
         $.ajax({
             url: `/category/${categoryId}`,
             method: 'DELETE'
@@ -31,15 +31,7 @@ module.exports = class extends React.Component {
         });
     }
 
-    saveCategoryChange(category) {
-        let categoryNameNew = this.changeCategoryNameInput.value
-        if (categoryNameNew) {
-            category.name = categoryNameNew
-        }
-        this.changeCategory(category);
-    }
-
-    editCategory() {
+    edit() {
         store.dispatch({
             type: 'editCategory',
             category: _.clone(this.props.category)
@@ -66,10 +58,10 @@ module.exports = class extends React.Component {
                     В расходе
                 </label>
             ),
-            actions =
-                <div className="actions">
-                    <button className="pt-button pt-icon-edit" onClick={this.editCategory.bind(this, category.id)}></button>
-                    <button className="pt-button pt-icon-trash" onClick={this.deleteCategory.bind(this, category.id)}></button>
+            buttons =
+                <div className="buttons">
+                    <button className="pt-button pt-icon-edit" onClick={this.edit.bind(this, category.id)}></button>
+                    <button className="pt-button pt-icon-trash" onClick={this.delete.bind(this, category.id)}></button>
                 </div>;
 
         return (
@@ -77,7 +69,7 @@ module.exports = class extends React.Component {
                 {categoryElem}
                 {incomeLabel}
                 {outgoLabel}
-                {actions}
+                {buttons}
             </li>
         );
     }

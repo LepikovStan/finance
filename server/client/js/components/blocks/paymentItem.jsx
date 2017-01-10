@@ -8,8 +8,7 @@ module.exports = class extends React.Component {
         super(props);
 
         this.state = {
-            categories: [],
-            editing: false
+            categories: []
         };
     }
 
@@ -24,7 +23,16 @@ module.exports = class extends React.Component {
     }
 
     edit() {
-        this.setState({editing: true})
+        store.dispatch({
+            type: 'editPayment',
+            payment: false
+        })
+        setTimeout(() => {
+            store.dispatch({
+                type: 'editPayment',
+                payment: _.clone(this.props)
+            })
+        }, 0)
     }
 
     delete(paymentId, paymentType) {
@@ -50,7 +58,7 @@ module.exports = class extends React.Component {
         this.setState({editing: false})
     }
 
-    changePayment() {
+    /*changePayment() {
         let amount = this.amountInput.value || this.props.amount;
         this.payment = Object.assign({}, this.payment, {
             id: this.props.id,
@@ -81,7 +89,7 @@ module.exports = class extends React.Component {
         .catch((error) => {
             console.error('error', error)
         });
-    }
+    }*/
 
     changeCategoryParams(params) {
         this.payment = Object.assign({}, this.payment, {
@@ -105,29 +113,14 @@ module.exports = class extends React.Component {
 
     render() {
         let {id, date, categoryName, amount, categoryId, paymentType, type} = this.props,
-            dateCell,
-            amountCell,
-            categoryCell,
+            dateCell = moment(date).locale('ru').format('LL'),
+            amountCell = amount,
+            categoryCell = categoryName,
             editButtons = '';
 
         categoryId = Number(categoryId);
         if (this.payment && this.payment.type) {
             paymentType = this.payment.type;
-        }
-
-        date = moment(date);
-        if (this.state.editing) {
-            dateCell = <input type="date" onChange={this.changeDate.bind(this)} value={date.format("YYYY-MM-DD")} defaultValue={moment().format("YYYY-MM-DD")} ref={(dateInput) => {this.dateInput = dateInput}} />
-            amountCell = <input type="number" onChange={this.changeAmount.bind(this)} value={this.state.amountChanged} placeholder={amount} ref={(amountInput) => this.amountInput = amountInput} />
-            categoryCell = <CategoriesField paymentType={paymentType} categoryId={categoryId} categoryName={categoryName} changeCategoryParams={this.changeCategoryParams.bind(this)} />
-            editButtons = <div>
-                            <button onClick={this.changePayment.bind(this)}>сохранить</button>
-                            <button onClick={this.cancel.bind(this)}>отмена</button>
-                        </div>
-        } else {
-            dateCell = date.format('LL');
-            amountCell = amount;
-            categoryCell = categoryName
         }
 
         return (
@@ -136,9 +129,10 @@ module.exports = class extends React.Component {
                 <td key={2}>{categoryCell}</td>
                 <td key={3}>{amountCell}</td>
                 <td key={4}>
-                    {editButtons}
-                    <button onClick={this.edit.bind(this, id)}>редактировать</button>
-                    <button onClick={this.delete.bind(this, id, type)}>удалить</button>
+                    <div className="buttons">
+                        <button className="pt-button pt-icon-edit" onClick={this.edit.bind(this, id)}></button>
+                        <button className="pt-button pt-icon-trash" onClick={this.delete.bind(this, id, type)}></button>
+                    </div>
                 </td>
             </tr>
         );

@@ -75,7 +75,7 @@ module.exports = class extends React.Component {
             type: 'editCategory',
             category: false
         })
-        this.props.cancel()
+        this.props.cancelEdit()
     }
 
     render() {

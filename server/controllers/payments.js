@@ -9,6 +9,7 @@ module.exports = class extends Controller {
         let filter = _.get(query, 'filter');
         let user = _.get(req, 'user');
         let payments;
+        const Payments = this.getService('Payments')
 
         if (type === 'last') {
             return this
@@ -29,8 +30,7 @@ module.exports = class extends Controller {
                 })
         }
         if (type === 'future') {
-            return this
-                .getService('Payments')
+            return Payments
                 .getFuture(user.id)
                 .then((payments) => {
                     if (filter){
@@ -47,9 +47,20 @@ module.exports = class extends Controller {
                 })
         }
 
-        res.json({
-            status: 'ok',
-            result: payments
-        });
+        return Payments
+            .getAll(user.id)
+            .then((payments) => {
+                if (filter){
+                    return _.slice(payments, 0, filter);
+                } else {
+                    return payments;
+                }
+            })
+            .then((payments) => {
+                res.json({
+                    status: 'ok',
+                    result: payments
+                });
+            })
     }
 }

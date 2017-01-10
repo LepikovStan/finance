@@ -11,8 +11,5 @@ module.exports = {
         income: [],
         outgo: []
     },
-    payments: {
-        last: {},
-        future: {}
-    }
+    payments: []
 }

@@ -78,10 +78,12 @@ module.exports = class extends React.Component {
         })
 
         let paymentTypeElems = this.state.types.map((type) => {
+            let label = type === 'income' ? 'Доход' : 'Расход'
+
             return <Radio
                 key={type}
                 className="pt-inline"
-                label={type}
+                label={label}
                 value={type} />
         });
         let categories = this.state.categories[this.state.currentType];

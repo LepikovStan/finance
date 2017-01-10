@@ -3,6 +3,12 @@ const _ = require ('lodash');
 
 class NewService extends Service {
 
+    updateDeletedCategory(params) {
+        return this
+            .getModel('Payments')
+            .updateDeletedCategory(params);
+    }
+
     sortByDate(format) {
         return (payments) => {
             return payments.sort((a, b) => {
@@ -64,14 +70,20 @@ class NewService extends Service {
         }
 
         return new Promise((resolve, reject) => {
-            this
-                .getModel('Payments')
-                .change(payment)
-                .then((result) => {
-                    payment.id = result.insertId;
-                    resolve(payment);
-                })
-        });
+            Promise.all([
+                this.getModel('Payments').change(payment),
+                this.getModel('Categories').getById(payment)
+            ])
+            .then(([paymentResult, categories]) => {
+                let category = categories[0];
+
+                payment.categoryName = category.name;
+                resolve(payment);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        })
     }
 
     add(payment) {
@@ -88,7 +100,6 @@ class NewService extends Service {
             ])
             .then(([paymentResult, categories]) => {
                 let category = categories[0];
-                console.log('category', category)
 
                 payment.id = paymentResult.insertId;
                 payment.categoryName = category.name;

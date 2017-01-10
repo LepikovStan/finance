@@ -11,6 +11,7 @@ const reducers = {
     getPayments: require('./getPayments'),
     deletePayment: require('./deletePayment'),
     changePayment: require('./changePayment'),
+    editPayment: require('./editPayment'),
     authUser: require('./authUser'),
     logoutUser: require('./logoutUser')
 }

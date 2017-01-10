@@ -38,7 +38,7 @@ module.exports = class extends React.Component {
         this.getCategories();
     }
 
-    cancel() {
+    cancelEdit() {
         this.setState({
             categoryToEdit: false
         })
@@ -59,7 +59,7 @@ module.exports = class extends React.Component {
                 name={categoryToEdit.name}
                 income={Boolean(categoryToEdit.income)}
                 outgo={Boolean(categoryToEdit.outgo)}
-                cancel={this.cancel.bind(this)} />
+                cancelEdit={this.cancelEdit.bind(this)} />
         }
 
         return (

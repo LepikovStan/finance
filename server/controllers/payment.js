@@ -42,7 +42,8 @@ module.exports = class extends Controller {
     }
 
     put(req, res) {
-        let payment = req.body.payment;
+        let payment = req.body;
+        payment.id = Number(req.params.paymentId);
         payment.userId = req.user.id;
 
         if (!payment.id) {
