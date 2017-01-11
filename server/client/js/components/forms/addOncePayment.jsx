@@ -11,7 +11,8 @@ module.exports = class extends React.Component {
             props = {
                 date: new Date(),
                 amount: '',
-                edit: false
+                edit: false,
+                paymentIcon: 'pt-icon pt-icon-plus'
             }
         }
         this.state = props
@@ -32,7 +33,7 @@ module.exports = class extends React.Component {
 
     changePaymentValue() {
         this.setState({
-            amount: this.paymentValueField.value
+            amount: Number(this.paymentValueField.value)
         })
     }
 
@@ -44,6 +45,10 @@ module.exports = class extends React.Component {
         this.data = Object.assign({}, this.data, {
             type: params.paymentType,
             categoryId: params.categoryId
+        })
+
+        this.setState({
+            paymentIcon: params.paymentType === 'income' ? 'pt-icon pt-icon-plus' : 'pt-icon pt-icon-minus'
         })
     }
 
@@ -103,8 +108,10 @@ module.exports = class extends React.Component {
             categoriesField = <CategoriesField changeCategoryParams={this.changeCategoryParams.bind(this)} />,
             buttons = <div className="buttons">
                 <button className="pt-button">Добавить</button>
-            </div>
+            </div>,
+            icon = <span className={this.state.paymentIcon}></span>;
 
+        console.log('state', this.state, this.data)
         if (edit) {
             buttons = <div className="buttons">
                 <button className="pt-button" onClick={this.onSubmit.bind(this)}>Сохранить</button>
@@ -131,12 +138,15 @@ module.exports = class extends React.Component {
                 </fieldset>
                 {categoriesField}
                 <fieldset>
-                    <input
-                        type="number"
-                        className="pt-input"
-                        value={this.state.amount}
-                        onChange={this.changePaymentValue.bind(this)}
-                        ref={ (input) => this.paymentValueField = input } />
+                    <div className="pt-input-group">
+                        {icon}
+                        <input
+                            type="number"
+                            className="pt-input"
+                            value={this.state.amount}
+                            onChange={this.changePaymentValue.bind(this)}
+                            ref={ (input) => this.paymentValueField = input } />
+                    </div>
                 </fieldset>
                 {buttons}
             </form>

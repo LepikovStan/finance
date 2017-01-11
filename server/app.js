@@ -104,7 +104,8 @@ let routes = {
     '/reports/:reportName': 'reports',
     '/user/login': 'loginUser',
     '/user/reg': 'registerUser',
-    '/user/logout': 'logout'
+    '/user/logout': 'logout',
+    '/currency': 'currency'
 };
 
 for (let route in routes) {

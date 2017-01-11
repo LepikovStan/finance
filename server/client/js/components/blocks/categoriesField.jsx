@@ -54,6 +54,14 @@ module.exports = class extends React.Component {
             categoryId,
             categoryName
         });
+
+        setTimeout((() => {
+            this.props.changeCategoryParams({
+                paymentType: this.state.currentType,
+                categoryId: Number(this.state.categoryId),
+                categoryName: this.state.categoryName
+            })
+        }).bind(this), 0)
     }
 
     changeCategoryId() {
@@ -64,18 +72,18 @@ module.exports = class extends React.Component {
             categoryId,
             categoryName
         });
-    }
-
-    render() {
-        if (!this.state.categories) {
-            return <div></div>
-        }
 
         this.props.changeCategoryParams({
             paymentType: this.state.currentType,
             categoryId: Number(this.state.categoryId),
             categoryName: this.state.categoryName
         })
+    }
+
+    render() {
+        if (!this.state.categories) {
+            return <div></div>
+        }
 
         let paymentTypeElems = this.state.types.map((type) => {
             let label = type === 'income' ? 'Доход' : 'Расход'
