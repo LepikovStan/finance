@@ -81,13 +81,19 @@ module.exports = class extends React.Component {
                             <fieldset>
                                 <label className="pt-label">
                                     Логин:
-                                    <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                    <div className="pt-input-group">
+                                        <span className="pt-icon pt-icon-log-in"></span>
+                                        <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                    </div>
                                 </label>
                             </fieldset>
                             <fieldset>
                                 <label className="pt-label">
                                     Пароль:
-                                    <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                    <div className="pt-input-group">
+                                        <span className="pt-icon pt-icon-lock"></span>
+                                        <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                    </div>
                                 </label>
                             </fieldset>
                             <button className="pt-button">Войти</button>
@@ -99,13 +105,19 @@ module.exports = class extends React.Component {
                             <fieldset>
                                 <label className="pt-label">
                                     Логин:
-                                    <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                    <div className="pt-input-group">
+                                        <span className="pt-icon pt-icon-log-in"></span>
+                                        <input className="pt-input" autoFocus value={this.state.login} type="text" onChange={this.onChangeLogin.bind(this)} name="login" ref={(loginInput) => this.loginInput = loginInput} />
+                                    </div>
                                 </label>
                             </fieldset>
                             <fieldset>
                                 <label className="pt-label">
                                     Пароль:
-                                    <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                    <div className="pt-input-group">
+                                        <span className="pt-icon pt-icon-lock"></span>
+                                        <input className="pt-input" value={this.state.pass} type="password" onChange={this.onChangePass.bind(this)} name="pass" ref={(passInput) => this.passInput = passInput} />
+                                    </div>
                                 </label>
                             </fieldset>
                             <button className="pt-button">Зарегистрироваться</button>
